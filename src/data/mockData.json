@@ -1,0 +1,801 @@
+{
+  "topCharts": {
+    "tracks": {
+      "items": [
+        {
+          "id": "track1",
+          "name": "Song 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "track2",
+          "name": "Song 2",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "track3",
+          "name": "Song 3",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "track4",
+          "name": "Song 4",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "track5",
+          "name": "Song 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    }
+  },
+  "songsByGenre": [
+    {
+      "id": "genre_track1",
+      "name": "Pop Song 1",
+      "artist": { "id": "artist1", "name": "Artist 1" },
+      "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+      "duration_ms": 180000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+    },
+    {
+      "id": "genre_track2",
+      "name": "Pop Song 2",
+      "artist": { "id": "artist2", "name": "Artist 2" },
+      "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+      "duration_ms": 200000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    },
+    {
+      "id": "genre_track3",
+      "name": "Pop Song 3",
+      "artist": { "id": "artist3", "name": "Artist 3" },
+      "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+      "duration_ms": 170000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+    },
+    {
+      "id": "genre_track4",
+      "name": "Pop Song 4",
+      "artist": { "id": "artist4", "name": "Artist 4" },
+      "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+      "duration_ms": 190000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+    },
+    {
+      "id": "genre_track5",
+      "name": "Pop Song 5",
+      "artist": { "id": "artist5", "name": "Artist 5" },
+      "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+      "duration_ms": 210000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    }
+  ],
+  "songsByCountry": [
+    {
+      "id": "country_track1",
+      "name": "US Song 1",
+      "artist": { "id": "artist1", "name": "Artist 1" },
+      "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+      "duration_ms": 180000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+    },
+    {
+      "id": "country_track2",
+      "name": "US Song 2",
+      "artist": { "id": "artist2", "name": "Artist 2" },
+      "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+      "duration_ms": 200000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    },
+    {
+      "id": "country_track3",
+      "name": "US Song 3",
+      "artist": { "id": "artist3", "name": "Artist 3" },
+      "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+      "duration_ms": 170000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+    },
+    {
+      "id": "country_track4",
+      "name": "US Song 4",
+      "artist": { "id": "artist4", "name": "Artist 4" },
+      "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+      "duration_ms": 190000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+    },
+    {
+      "id": "country_track5",
+      "name": "US Song 5",
+      "artist": { "id": "artist5", "name": "Artist 5" },
+      "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+      "duration_ms": 210000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    }
+  ],
+  "songsBySearch": {
+    "tracks": [
+      {
+        "id": "search_track1",
+        "name": "Search Song 1",
+        "artist": { "id": "artist1", "name": "Artist 1" },
+        "album": { "id": "album1", "name": "Search Album 1", "image": "https://picsum.photos/300" },
+        "duration_ms": 180000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+      },
+      {
+        "id": "search_track2",
+        "name": "Search Song 2",
+        "artist": { "id": "artist2", "name": "Artist 2" },
+        "album": { "id": "album2", "name": "Search Album 2", "image": "https://picsum.photos/300" },
+        "duration_ms": 200000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+      },
+      {
+        "id": "search_track3",
+        "name": "Search Song 3",
+        "artist": { "id": "artist3", "name": "Artist 3" },
+        "album": { "id": "album3", "name": "Search Album 3", "image": "https://picsum.photos/300" },
+        "duration_ms": 170000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+      },
+      {
+        "id": "search_track4",
+        "name": "Search Song 4",
+        "artist": { "id": "artist4", "name": "Artist 4" },
+        "album": { "id": "album4", "name": "Search Album 4", "image": "https://picsum.photos/300" },
+        "duration_ms": 190000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+      },
+      {
+        "id": "search_track5",
+        "name": "Search Song 5",
+        "artist": { "id": "artist5", "name": "Artist 5" },
+        "album": { "id": "album5", "name": "Search Album 5", "image": "https://picsum.photos/300" },
+        "duration_ms": 210000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+      }
+    ]
+  },
+  "artistDetails": [
+    {
+      "id": "artist1",
+      "name": "Artist 1",
+      "genres": ["Pop", "Rock"],
+      "image": "https://picsum.photos/300",
+      "followers": { "total": 1000000 },
+      "topSongs": [
+        {
+          "id": "artist1_song1",
+          "name": "Artist 1 Song 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Artist 1 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "artist1_song2",
+          "name": "Artist 1 Song 2",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Artist 1 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "artist1_song3",
+          "name": "Artist 1 Song 3",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Artist 1 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "artist1_song4",
+          "name": "Artist 1 Song 4",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Artist 1 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "artist1_song5",
+          "name": "Artist 1 Song 5",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Artist 1 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "artist2",
+      "name": "Artist 2",
+      "genres": ["Hip Hop"],
+      "image": "https://picsum.photos/300",
+      "followers": { "total": 500000 },
+      "topSongs": [
+        {
+          "id": "artist2_song1",
+          "name": "Artist 2 Song 1",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Artist 2 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "artist2_song2",
+          "name": "Artist 2 Song 2",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Artist 2 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "artist2_song3",
+          "name": "Artist 2 Song 3",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Artist 2 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "artist2_song4",
+          "name": "Artist 2 Song 4",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Artist 2 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "artist2_song5",
+          "name": "Artist 2 Song 5",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Artist 2 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "artist3",
+      "name": "Artist 3",
+      "genres": ["Electronic"],
+      "image": "https://picsum.photos/300",
+      "followers": { "total": 750000 },
+      "topSongs": [
+        {
+          "id": "artist3_song1",
+          "name": "Artist 3 Song 1",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Artist 3 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "artist3_song2",
+          "name": "Artist 3 Song 2",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Artist 3 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "artist3_song3",
+          "name": "Artist 3 Song 3",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Artist 3 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "artist3_song4",
+          "name": "Artist 3 Song 4",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Artist 3 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "artist3_song5",
+          "name": "Artist 3 Song 5",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Artist 3 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "artist4",
+      "name": "Artist 4",
+      "genres": ["Jazz"],
+      "image": "https://picsum.photos/300",
+      "followers": { "total": 200000 },
+      "topSongs": [
+        {
+          "id": "artist4_song1",
+          "name": "Artist 4 Song 1",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Artist 4 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "artist4_song2",
+          "name": "Artist 4 Song 2",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Artist 4 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "artist4_song3",
+          "name": "Artist 4 Song 3",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Artist 4 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "artist4_song4",
+          "name": "Artist 4 Song 4",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Artist 4 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "artist4_song5",
+          "name": "Artist 4 Song 5",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Artist 4 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "artist5",
+      "name": "Artist 5",
+      "genres": ["Classical"],
+      "image": "https://picsum.photos/300",
+      "followers": { "total": 300000 },
+      "topSongs": [
+        {
+          "id": "artist5_song1",
+          "name": "Artist 5 Song 1",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Artist 5 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "artist5_song2",
+          "name": "Artist 5 Song 2",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Artist 5 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "artist5_song3",
+          "name": "Artist 5 Song 3",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Artist 5 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "artist5_song4",
+          "name": "Artist 5 Song 4",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Artist 5 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "artist5_song5",
+          "name": "Artist 5 Song 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Artist 5 Album", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    }
+  ],
+  "songDetails": [
+    {
+      "id": "track1",
+      "name": "Song 1",
+      "artist": { "id": "artist1", "name": "Artist 1" },
+      "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+      "duration_ms": 180000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+    },
+    {
+      "id": "track2",
+      "name": "Song 2",
+      "artist": { "id": "artist2", "name": "Artist 2" },
+      "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+      "duration_ms": 200000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    },
+    {
+      "id": "track3",
+      "name": "Song 3",
+      "artist": { "id": "artist3", "name": "Artist 3" },
+      "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+      "duration_ms": 170000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+    },
+    {
+      "id": "track4",
+      "name": "Song 4",
+      "artist": { "id": "artist4", "name": "Artist 4" },
+      "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+      "duration_ms": 190000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+    },
+    {
+      "id": "track5",
+      "name": "Song 5",
+      "artist": { "id": "artist5", "name": "Artist 5" },
+      "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+      "duration_ms": 210000,
+      "preview_url": "https://picsum.photos/300",
+      "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+    }
+  ],
+  "songRelated": {
+    "tracks": [
+      {
+        "id": "related_track1",
+        "name": "Related Song 1",
+        "artist": { "id": "artist1", "name": "Artist 1" },
+        "album": { "id": "album1", "name": "Related Album 1", "image": "https://picsum.photos/300" },
+        "duration_ms": 180000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+      },
+      {
+        "id": "related_track2",
+        "name": "Related Song 2",
+        "artist": { "id": "artist2", "name": "Artist 2" },
+        "album": { "id": "album2", "name": "Related Album 2", "image": "https://picsum.photos/300" },
+        "duration_ms": 200000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+      },
+      {
+        "id": "related_track3",
+        "name": "Related Song 3",
+        "artist": { "id": "artist3", "name": "Artist 3" },
+        "album": { "id": "album3", "name": "Related Album 3", "image": "https://picsum.photos/300" },
+        "duration_ms": 170000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+      },
+      {
+        "id": "related_track4",
+        "name": "Related Song 4",
+        "artist": { "id": "artist4", "name": "Artist 4" },
+        "album": { "id": "album4", "name": "Related Album 4", "image": "https://picsum.photos/300" },
+        "duration_ms": 190000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+      },
+      {
+        "id": "related_track5",
+        "name": "Related Song 5",
+        "artist": { "id": "artist5", "name": "Artist 5" },
+        "album": { "id": "album5", "name": "Related Album 5", "image": "https://picsum.photos/300" },
+        "duration_ms": 210000,
+        "preview_url": "https://picsum.photos/300",
+        "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+      }
+    ]
+  },
+  "albums": [
+    {
+      "id": "album1",
+      "name": "Album 1",
+      "artist": { "id": "artist1", "name": "Artist 1" },
+      "image": "https://picsum.photos/300",
+      "tracks": [
+        {
+          "id": "track1",
+          "name": "Song 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "genre_track1",
+          "name": "Pop Song 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        },
+        {
+          "id": "country_track1",
+          "name": "US Song 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+          "duration_ms": 180000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+        }
+      ]
+    },
+    {
+      "id": "album2",
+      "name": "Album 2",
+      "artist": { "id": "artist2", "name": "Artist 2" },
+      "image": "https://picsum.photos/300",
+      "tracks": [
+        {
+          "id": "track2",
+          "name": "Song 2",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "genre_track2",
+          "name": "Pop Song 2",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "country_track2",
+          "name": "US Song 2",
+          "artist": { "id": "artist2", "name": "Artist 2" },
+          "album": { "id": "album2", "name": "Album 2", "image": "https://picsum.photos/300" },
+          "duration_ms": 200000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "album3",
+      "name": "Album 3",
+      "artist": { "id": "artist3", "name": "Artist 3" },
+      "image": "https://picsum.photos/300",
+      "tracks": [
+        {
+          "id": "track3",
+          "name": "Song 3",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "genre_track3",
+          "name": "Pop Song 3",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        },
+        {
+          "id": "country_track3",
+          "name": "US Song 3",
+          "artist": { "id": "artist3", "name": "Artist 3" },
+          "album": { "id": "album3", "name": "Album 3", "image": "https://picsum.photos/300" },
+          "duration_ms": 170000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2020/03/07/33355-397122082_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "album4",
+      "name": "Album 4",
+      "artist": { "id": "artist4", "name": "Artist 4" },
+      "image": "https://picsum.photos/300",
+      "tracks": [
+        {
+          "id": "track4",
+          "name": "Song 4",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "genre_track4",
+          "name": "Pop Song 4",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        },
+        {
+          "id": "country_track4",
+          "name": "US Song 4",
+          "artist": { "id": "artist4", "name": "Artist 4" },
+          "album": { "id": "album4", "name": "Album 4", "image": "https://picsum.photos/300" },
+          "duration_ms": 190000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/06/09/215926_large.mp4"
+        }
+      ]
+    },
+    {
+      "id": "album5",
+      "name": "Album 5",
+      "artist": { "id": "artist5", "name": "Artist 5" },
+      "image": "https://picsum.photos/300",
+      "tracks": [
+        {
+          "id": "track5",
+          "name": "Song 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "genre_track5",
+          "name": "Pop Song 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        },
+        {
+          "id": "country_track5",
+          "name": "US Song 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+          "duration_ms": 210000,
+          "preview_url": "https://picsum.photos/300",
+          "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "user1",
+      "name": "Alice Nguyen",
+      "email": "alice@example.com",
+      "password": "password123",
+      "albums": [
+        {
+          "id": "album1",
+          "name": "Album 1",
+          "artist": { "id": "artist1", "name": "Artist 1" },
+          "image": "https://picsum.photos/300",
+          "tracks": [
+            {
+              "id": "track1",
+              "name": "Song 1",
+              "artist": { "id": "artist1", "name": "Artist 1" },
+              "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+              "duration_ms": 180000,
+              "preview_url": "https://picsum.photos/300",
+              "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+            },
+            {
+              "id": "genre_track1",
+              "name": "Pop Song 1",
+              "artist": { "id": "artist1", "name": "Artist 1" },
+              "album": { "id": "album1", "name": "Album 1", "image": "https://picsum.photos/300" },
+              "duration_ms": 180000,
+              "preview_url": "https://picsum.photos/300",
+              "video_url": "https://pic.pikbest.com/19/51/73/76i888piCZIW.mp4"
+            }
+          ]
+        },
+        {
+          "id": "album5",
+          "name": "Album 5",
+          "artist": { "id": "artist5", "name": "Artist 5" },
+          "image": "https://picsum.photos/300",
+          "tracks": [
+            {
+              "id": "track5",
+              "name": "Song 5",
+              "artist": { "id": "artist5", "name": "Artist 5" },
+              "album": { "id": "album5", "name": "Album 5", "image": "https://picsum.photos/300" },
+              "duration_ms": 210000,
+              "preview_url": "https://picsum.photos/300",
+              "video_url": "https://cdn.pixabay.com/video/2024/02/26/202004-916894674_large.mp4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "user2",
+      "name": "Bob Tran",
+      "email": "bob@example.com",
+      "password": "secret456",
+      "albums": []
+    }
+  ]
+}
