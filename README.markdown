@@ -240,10 +240,3 @@ Chúng tôi hoan nghênh mọi đóng góp! Để tham gia:
 3. Commit thay đổi (`git commit -m 'Thêm tính năng mới'`).
 4. Push lên nhánh (`git push origin feature/tinh-nang-moi`).
 5. Mở Pull Request.
-
-Vui lòng đảm bảo mã tuân theo chuẩn ESLint/Prettier và bao gồm bài kiểm tra nếu có.
-
-## Giấy Phép
-Dự án này được cấp phép theo Giấy Phép MIT. Xem file [LICENSE](LICENSE) để biết chi tiết.
-
----
