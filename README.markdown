@@ -1,6 +1,6 @@
 # Spotify Clone
 
-Một ứng dụng phát nhạc tương tự Spotify được xây dựng bằng **ReactJS**, **Redux Toolkit Query**, **React Router** và **Tailwind CSS**. Dự án mô phỏng các tính năng cốt lõi của một nền tảng âm nhạc, bao gồm phát nhạc, tạo album, xác thực người dùng, quản lý hồ sơ và tìm kiếm. Dữ liệu được lấy từ file `mockData.json`, cung cấp tập dữ liệu phong phú về bài hát, album, nghệ sĩ và người dùng.
+Một ứng dụng phát nhạc tương tự Spotify được xây dựng bằng **ReactJS**, **Redux Toolkit Query**, **React Router** và **Tailwind CSS**. Dự án mô phỏng các tính năng cốt lõi của một nền tảng âm nhạc, bao gồm phát nhạc, tạo album, xác thực người dùng, quản lý hồ sơ và tìm kiếm. Dữ liệu được lưu trữ và lấy từ phía Backend, cung cấp tập dữ liệu phong phú về bài hát, album, nghệ sĩ và người dùng.
 
 ## Mục Lục
 - [Tính Năng](#tính-năng)
@@ -21,7 +21,7 @@ Một ứng dụng phát nhạc tương tự Spotify được xây dựng bằng
 - **Tìm Kiếm**: Tìm kiếm bài hát theo tên, hiển thị tất cả bài hát khi không nhập từ khóa.
 - **Xác Thực Người Dùng**: Đăng ký và đăng nhập bằng email/mật khẩu, quản lý hồ sơ để chỉnh sửa tên/email và xem album đã tạo.
 - **Thiết Kế Responsive**: Giao diện thân thiện với thiết bị di động nhờ Tailwind CSS, bao gồm trình phát thu nhỏ cố định ở dưới cùng.
-- **Backend Mô Phỏng**: Sử dụng `mockData.json` cho dữ liệu, với Redux Toolkit Query mô phỏng các cuộc gọi API.
+- **Backend Mô Phỏng**: Sử dụng database bên phía Backend cho dữ liệu, với Redux Toolkit Query để gọi API.
 
 ## Cấu Trúc Dự Án
 ```
@@ -39,8 +39,6 @@ spotify-clone/
 │   │   ├── SongCard.jsx
 │   │   ├── Track.jsx
 │   │   └── VolumeBar.jsx
-│   ├── data/
-│   │   └── mockData.json
 │   ├── pages/
 │   │   ├── CreateAlbum.jsx
 │   │   ├── Login.jsx
@@ -61,7 +59,6 @@ spotify-clone/
 ```
 
 - **components/**: Các thành phần giao diện có thể tái sử dụng (ví dụ: `Player`, `Controls`, `SongCard`).
-- **data/**: File `mockData.json` chứa dữ liệu bài hát, album, nghệ sĩ và người dùng.
 - **pages/**: Các thành phần cấp trang cho các tuyến đường (ví dụ: `Profile`, `Search`).
 - **redux/**: Redux store, slices và dịch vụ API sử dụng Redux Toolkit Query.
 - **App.jsx**: Ứng dụng chính với thiết lập định tuyến.
@@ -105,22 +102,19 @@ Hướng dẫn cài đặt và chạy dự án trên máy cục bộ.
    npx tailwindcss init
    ```
 
-4. **Kiểm Tra `mockData.json`**:
-   Đảm bảo file `src/data/mockData.json` tồn tại và chứa dữ liệu hợp lệ cho bài hát, album, nghệ sĩ và người dùng. Cập nhật các trường `video_url` để sử dụng URL MP4 (ví dụ: `https://cdn.pixabay.com/video/2022/09/30/133080-755975094_large.mp4`) thay vì URL YouTube.
-
-5. **Chạy Server Phát Triển**:
+4. **Chạy Server Phát Triển**:
    ```bash
    npm start
    ```
    Ứng dụng sẽ mở tại `http://localhost:3000`.
 
-6. **Build Cho Production** (tùy chọn):
+5. **Build Cho Production** (tùy chọn):
    ```bash
    npm run build
    ```
 
 ## Hướng Dẫn Sử Dụng
-- **Đăng Ký/Đăng Nhập**: Truy cập `/register` để tạo tài khoản hoặc `/login` để đăng nhập (ví dụ: sử dụng `alice@example.com`/`password123` từ `mockData.json`).
+- **Đăng Ký/Đăng Nhập**: Truy cập `/register` để tạo tài khoản hoặc `/login` để đăng nhập (ví dụ: sử dụng `alice@example.com`/`password123`).
 - **Hồ Sơ**: Xem và chỉnh sửa thông tin người dùng, cũng như các album đã tạo tại `/profile`.
 - **Tạo Album**: Truy cập `/create-album` để tạo album tùy chỉnh với bài hát và hình ảnh.
 - **Tìm Kiếm**: Sử dụng `/search/:searchTerm` để tìm bài hát hoặc `/search` để xem tất cả bài hát.
@@ -150,7 +144,7 @@ Hướng dẫn cài đặt và chạy dự án trên máy cục bộ.
 - **Mục Đích**: Cho phép người dùng tạo album tùy chỉnh.
 - **Tính Năng**:
   - Form nhập tên album, tải lên hình ảnh và chọn bài hát.
-  - Lưu album vào hồ sơ người dùng trong `mockData.json`.
+  - Lưu album vào hồ sơ người dùng trong cơ sở dữ liệu ở phía Backend.
   - Yêu cầu đăng nhập; chuyển hướng đến `/login` nếu chưa xác thực.
 - **Vị Trí**: `src/pages/CreateAlbum.jsx`
 
@@ -183,7 +177,7 @@ Hướng dẫn cài đặt và chạy dự án trên máy cục bộ.
 - **Mục Đích**: Tạo tài khoản người dùng mới.
 - **Tính Năng**:
   - Form nhập tên, email và mật khẩu với kiểm tra hợp lệ.
-  - Thêm người dùng vào `mockData.json` (trong bộ nhớ) và đăng nhập.
+  - Thêm người dùng vào cơ sở dữ liệu và đăng nhập.
   - Liên kết đến `/login` cho người dùng hiện có.
 - **Vị Trí**: `src/pages/Register.jsx`
 
@@ -220,7 +214,7 @@ Dưới đây là cái nhìn tổng quan về trải nghiệm người dùng:
 
 ## Công Nghệ Sử Dụng
 - **ReactJS**: Khung chính để xây dựng giao diện.
-- **Redux Toolkit Query**: Quản lý API và trạng thái với `mockApi` cho `mockData.json`.
+- **Redux Toolkit Query**: Quản lý API và trạng thái với `spotifyApi` cho cơ sở dữ liệuliệu.
 - **React Router**: Xử lý định tuyến phía client (`/search`, `/profile`, v.v.).
 - **Tailwind CSS**: Tạo kiểu với các lớp tiện ích cho thiết kế responsive.
 - **@heroicons/react**: Biểu tượng cho các nút (ví dụ: phát, thu nhỏ).
@@ -228,19 +222,16 @@ Dưới đây là cái nhìn tổng quan về trải nghiệm người dùng:
 - **Vite**: Công cụ xây dựng cho phát triển nhanh (giả định; điều chỉnh nếu dùng Create React App).
 
 ## Hạn Chế
-- **Lưu Trữ Dữ Liệu**: Thay đổi trong `mockData.json` (ví dụ: người dùng mới, album) chỉ tồn tại trong bộ nhớ và bị reset khi khởi động lại. Cần backend thực sự để lưu trữ.
-- **Bảo Mật**: Mật khẩu được lưu dạng văn bản thuần trong `mockData.json`. Trong sản phẩm thực tế, sử dụng mật khẩu mã hóa và JWT/OAuth.
+- **Lưu Trữ Dữ Liệu**: Thay đổi trong cơ sở dữ liệu (ví dụ: người dùng mới, album).
 - **Phát Video**: Phụ thuộc vào URL MP4 hỗ trợ CORS. Các URL không phải MP4 hoặc bị giới hạn CORS có thể thất bại.
 - **Tự Động Phát**: Hạn chế của trình duyệt có thể chặn phát video tự động nếu không có tương tác người dùng.
 - **Khả Năng Mở Rộng**: Việc tổng hợp tất cả bài hát trong `getAllSongs` có thể chậm với tập dữ liệu lớn.
 
 ## Cải Tiến Trong Tương Lai
-- **Tích Hợp Backend**: Thay `mockData.json` bằng backend thực (ví dụ: Node.js, MongoDB) để lưu trữ dữ liệu.
 - **Xác Thực**: Triển khai JWT và mã hóa mật khẩu cho đăng nhập/đăng ký an toàn.
 - **Điều Khiển Video Tùy Chỉnh**: Thay điều khiển `<video>` mặc định bằng giao diện tùy chỉnh.
 - **Hình Thu Nhỏ Video**: Tạo hình thu nhỏ từ video MP4 cho trình phát thu nhỏ hoặc `SongCard`.
 - **Phân Trang**: Thêm phân trang cho `Search` với danh sách bài hát lớn.
-- **Hỗ Trợ Ngoại Tuyến**: Lưu trữ `mockData.json` hoặc video để sử dụng ngoại tuyến với Service Worker.
 
 ## Đóng Góp
 Chúng tôi hoan nghênh mọi đóng góp! Để tham gia:
@@ -256,5 +247,3 @@ Vui lòng đảm bảo mã tuân theo chuẩn ESLint/Prettier và bao gồm bài
 Dự án này được cấp phép theo Giấy Phép MIT. Xem file [LICENSE](LICENSE) để biết chi tiết.
 
 ---
-
-Được xây dựng với 💖 bởi [Tên Bạn]
