@@ -1,52 +1,53 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
 import { Error, Loader, SongCard } from '../components';
-import { useGetSongsBySearchQuery, useGetAllSongsQuery } from '../redux/services/spotifyApi';
+import { useGetSongsBySearchQuery } from '../redux/services/spotifyApi';
 
 const Search = () => {
   const { searchTerm } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-
-  // Use getAllSongsQuery when searchTerm is empty, otherwise use getSongsBySearchQuery
-  const {
-    data: searchData,
-    isFetching: isFetchingSearch,
-    error: searchError,
-  } = useGetSongsBySearchQuery(searchTerm);
+  const { data: searchData, isFetching, error } = useGetSongsBySearchQuery(searchTerm || '');
 
   const songs = searchData?.tracks || [];
-  const isFetching = isFetchingSearch;
-  const error = searchError;
 
-  if (isFetching) return <Loader title={searchTerm ? `Searching ${searchTerm}...` : 'Loading all songs...'} />;
+  if (isFetching) {
+    return <Loader title={searchTerm ? `Đang tìm kiếm "${searchTerm}"...` : 'Đang tải tất cả bài hát...'} />;
+  }
 
-  if (error) return <Error />;
+  if (error) {
+    return <Error message={error.data?.detail || 'Tìm kiếm thất bại'} />;
+  }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-spotify-black p-6">
       <h2 className="font-bold text-3xl text-white text-left mt-4 mb-10">
         {searchTerm ? (
           <>
-            Showing results for <span className="font-black">{searchTerm}</span>
+            Kết quả cho <span className="font-black">{searchTerm}</span>
           </>
         ) : (
-          'All Songs'
+          'Tất Cả Bài Hát'
         )}
       </h2>
 
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {songs.map((song, i) => (
-          <SongCard
-            key={song.id}
-            song={song}
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            data={searchData}
-            i={i}
-          />
-        ))}
+        {songs.length > 0 ? (
+          songs.map((song, i) => (
+            <SongCard
+              key={song.id}
+              song={song}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              data={songs}
+              i={i}
+            />
+          ))
+        ) : (
+          <p className="text-spotify-light-gray text-lg">
+            {searchTerm ? `Không tìm thấy bài hát nào cho "${searchTerm}"` : 'Không có bài hát nào'}
+          </p>
+        )}
       </div>
     </div>
   );

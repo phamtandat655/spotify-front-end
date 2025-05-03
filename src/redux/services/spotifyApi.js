@@ -1,155 +1,315 @@
-import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import mockData from '../../data/mockData.json';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const mockApi = createApi({
-  reducerPath: 'mockApi',
-  baseQuery: fakeBaseQuery(),
+export const spotifyApi = createApi({
+  reducerPath: 'spotifyApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://127.0.0.1:8000/api/',
+    credentials: 'include', // Include cookies for session-based authentication
+    prepareHeaders: (headers) => {
+      // Add CSRF token for POST/PUT/DELETE requests
+      const csrfToken = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+      if (csrfToken) {
+        headers.set('X-CSRFToken', csrfToken);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
+    // Music-related endpoints
     getTopCharts: builder.query({
-      queryFn: () => ({
-        data: mockData.topCharts,
+      query: () => 'music/topcharts/',
+      transformResponse: (response) => ({
+        tracks: { items: response.topCharts.tracks.items },
       }),
-    }),
-    getSongsByGenre: builder.query({
-      queryFn: (albumId) => {
-        if (!albumId || albumId === 'all') {
-          return { data: mockData.songsByGenre };
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { tracks: { items: [] } };
         }
-        const album = mockData.albums.find((a) => a.id === albumId);
-        return { data: album ? album.tracks : [] };
+        return response;
       },
     }),
-    getSongsByCountry: builder.query({
-      queryFn: () => ({
-        data: mockData.songsByCountry,
+    playTrack: builder.mutation({
+      query: (trackId) => ({
+        url: `music/tracks/${trackId}/play/`,
+        method: 'PATCH',
       }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'Track not found' };
+        }
+        return response;
+      },
+    }),
+    getSongsByGenre: builder.query({
+      query: (genreName) => {
+        if (genreName === 'all') {
+          return {
+            url: 'music/tracks/search/',
+            params: {},
+          };
+        }
+        return `music/tracks/genre/${genreName}/`;
+      },
+      transformResponse: (response) => {
+        return response.songsByGenre || response.songsBySearch?.tracks || [];
+      },
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return [];
+        }
+        return response;
+      },
+    }),
+    getAllSongs: builder.query({
+      query: () => ({
+        url: 'music/tracks/search/',
+        params: {},
+      }),
+      transformResponse: (response) => ({
+        tracks: response.songsBySearch?.tracks || [],
+      }),
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { tracks: [] };
+        }
+        return response;
+      },
     }),
     getSongsBySearch: builder.query({
-      queryFn: (searchTerm) => {
-        const filteredTracks = mockData.songsBySearch.tracks.filter((song) =>
-          song.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        return { data: { tracks: filteredTracks } };
+      query: (searchTerm) => ({
+        url: 'music/tracks/search',
+        params: searchTerm ? { search_name: searchTerm } : {},
+      }),
+      transformResponse: (response) => ({
+        tracks: response.songsBySearch?.tracks || [],
+      }),
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { tracks: [] };
+        }
+        return response;
       },
     }),
     getArtistDetails: builder.query({
-      queryFn: (artistId) => ({
-        data: mockData.artistDetails.find((artist) => artist.id === artistId) || mockData.artistDetails[0],
-      }),
-    }),
-    getSongDetails: builder.query({
-      queryFn: ({ songid }) => ({
-        data: mockData.songDetails.find((song) => song.id === songid) || mockData.songDetails[0],
-      }),
-    }),
-    getSongRelated: builder.query({
-      queryFn: ({ songid }) => ({
-        data: mockData.songRelated,
-      }),
-    }),
-    getAlbums: builder.query({
-      queryFn: () => ({
-        data: mockData.albums,
-      }),
-    }),
-    getAllSongs: builder.query({
-      queryFn: () => {
-        const allSongs = [
-          ...mockData.topCharts.tracks.items,
-          ...mockData.songsByGenre,
-          ...mockData.songsByCountry,
-          ...mockData.songsBySearch.tracks,
-          ...mockData.songDetails,
-          ...mockData.songRelated.tracks,
-          ...mockData.albums.flatMap((album) => album.tracks),
-        ];
-
-        // Remove duplicates by song ID
-        const uniqueSongs = Array.from(
-          new Map(allSongs.map((song) => [song.id, song])).values()
-        );
-
-        return { data: { tracks: uniqueSongs } };
+      query: (artistName) => `music/tracks/artist/${artistName}/`,
+      transformResponse: (response) => response.artistDetails || {},
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return {};
+        }
+        return response;
       },
     }),
-    getAlbumsByUserId: builder.query({
-      queryFn: (userId) => {
-        if (!userId) {
+    getSongDetails: builder.query({
+      query: (trackId) => `music/tracks/tracksdetail/${trackId}/`,
+      transformResponse: (response) => response.songDetails || {},
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return {};
+        }
+        return response;
+      },
+    }),
+    getSongRelated: builder.query({
+      query: (trackId) => `music/tracks/related-song/${trackId}/`,
+      transformResponse: (response) => ({
+        tracks: response.songRelated?.tracks || [],
+      }),
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { tracks: [] };
+        }
+        return response;
+      },
+    }),
+    getAlbums: builder.query({
+      query: () => 'music/tracks/albums/',
+      transformResponse: (response) => response.albums || [],
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
           return [];
         }
-        const user = mockData.users.find((u) => u.id === userId);
-        if (!user) {
-          return { error: { status: 404, data: 'User not found' } };
+        return response;
+      },
+    }),
+    // User-related endpoints
+    getUsers: builder.query({
+      query: () => 'user/',
+      transformResponse: (response) => response.users || [],
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return [];
         }
-        return { data: user.albums || [] };
+        return response;
       },
     }),
     getUserProfile: builder.query({
-      queryFn: (userId) => {
-        const user = mockData.users.find((u) => u.id === userId);
-        if (!user) {
-          return { error: { status: 'NOT_FOUND', data: 'User not found' } };
+      query: () => 'user/me/',
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404 || response.status === 401) {
+          return {};
         }
-        return { data: user };
-      },
-    }),
-    updateUserProfile: builder.mutation({
-      queryFn: ({ userId, name, email }) => {
-        const user = mockData.users.find((u) => u.id === userId);
-        if (!user) {
-          return { error: { status: 'NOT_FOUND', data: 'User not found' } };
-        }
-        // Simulate updating user data (in a real app, this would update the backend)
-        user.name = name;
-        user.email = email;
-        return { data: user };
+        return response;
       },
     }),
     registerUser: builder.mutation({
-      queryFn: ({ name, email, password }) => {
-        const existingUser = mockData.users.find((u) => u.email === email);
-        if (existingUser) {
-          return { error: { status: 'CONFLICT', data: 'Email already exists' } };
-        }
-        const newUser = {
-          id: `user${mockData.users.length + 1}`,
-          name,
-          email,
-          password, // In a real app, hash the password
-          albums: [],
-        };
-        mockData.users.push(newUser);
-        return { data: newUser };
-      },
+      query: ({ name, email, username, password }) => ({
+        url: 'user/register/',
+        method: 'POST',
+        body: { name, email, username, password, password2: password },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
     }),
     loginUser: builder.mutation({
-      queryFn: ({ email, password }) => {
-        const user = mockData.users.find(
-          (u) => u.email === email && u.password === password
-        );
-        if (!user) {
-          return { error: { status: 'UNAUTHORIZED', data: 'Invalid email or password' } };
+      query: ({ username, password }) => ({
+        url: 'user/login/',
+        method: 'POST',
+        body: { username, password },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
+    }),
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: 'user/logout/',
+        method: 'POST',
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
+    }),
+    createAlbum: builder.mutation({
+      query: ({ userId, album }) => ({
+        url: `user/${userId}/albums/create/`,
+        method: 'POST',
+        body: { name: album.name },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'User not found' };
         }
-        return { data: { id: user.id, name: user.name, email: user.email } };
+        return response;
+      },
+    }),
+    addTracksToAlbum: builder.mutation({
+      query: ({ userId, albumId, trackIds }) => ({
+        url: `user/${userId}/albums/${albumId}/add-tracks/`,
+        method: 'POST',
+        body: { track_ids: trackIds },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { message: 'Album or user not found', added_track_ids: [] };
+        }
+        return response;
+      },
+    }),
+    renameAlbum: builder.mutation({
+      query: ({ albumId, name }) => ({
+        url: `user/albums/${albumId}/rename/`,
+        method: 'PUT',
+        body: { name },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'Album not found' };
+        }
+        return response;
+      },
+    }),
+    deleteAlbum: builder.mutation({
+      query: ({ albumId }) => ({
+        url: `user/albums/${albumId}/delete/`,
+        method: 'DELETE',
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'Album not found' };
+        }
+        return response;
+      },
+    }),
+    getUserAlbums: builder.query({
+      query: (userId) => `user/${userId}/albums/`,
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return [];
+        }
+        return response;
+      },
+    }),
+    addFavoriteTrack: builder.mutation({
+      query: ({ userId, trackId }) => ({
+        url: `user/${userId}/favourites/`,
+        method: 'POST',
+        body: { track_id: trackId },
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'User or track not found' };
+        }
+        return response;
+      },
+    }),
+    removeFavoriteTrack: builder.mutation({
+      query: ({ userId, trackId }) => ({
+        url: `user/${userId}/favourites/${trackId}/`,
+        method: 'DELETE',
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { detail: 'Track not in favorites' };
+        }
+        return response;
+      },
+    }),
+    getFavoriteTracks: builder.query({
+      query: (userId) => `user/${userId}/favourites/list/`,
+      transformResponse: (response) =>
+        response.map((item) => item.track) || [],
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return [];
+        }
+        return response;
       },
     }),
   }),
 });
 
-
 export const {
   useGetTopChartsQuery,
+  usePlayTrackMutation,
   useGetSongsByGenreQuery,
-  useGetSongsByCountryQuery,
   useGetSongsBySearchQuery,
   useGetArtistDetailsQuery,
   useGetSongDetailsQuery,
   useGetSongRelatedQuery,
   useGetAlbumsQuery,
   useGetAllSongsQuery,
-  useGetAlbumsByUserIdQuery,
+  useGetUsersQuery,
   useGetUserProfileQuery,
-  useUpdateUserProfileMutation,
   useRegisterUserMutation,
   useLoginUserMutation,
-} = mockApi;
+  useLogoutUserMutation,
+  useCreateAlbumMutation,
+  useAddTracksToAlbumMutation,
+  useRenameAlbumMutation,
+  useDeleteAlbumMutation,
+  useGetUserAlbumsQuery,
+  useAddFavoriteTrackMutation,
+  useRemoveFavoriteTrackMutation,
+  useGetFavoriteTracksQuery,
+} = spotifyApi;

@@ -6,7 +6,7 @@ const initialState = {
   isActive: false,
   isPlaying: false,
   activeSong: {},
-  albumListId: 'all',
+  genre: 'pop', // Thay albumListId thành genre
 };
 
 const playerSlice = createSlice({
@@ -53,12 +53,12 @@ const playerSlice = createSlice({
       state.isPlaying = action.payload;
     },
 
-    selectAlbumListId: (state, action) => {
-      state.albumListId = action.payload;
+    selectGenre: (state, action) => {
+      state.genre = action.payload;
     },
   },
 });
 
-export const { setActiveSong, nextSong, prevSong, playPause, selectAlbumListId } = playerSlice.actions;
+export const { setActiveSong, nextSong, prevSong, playPause, selectGenre } = playerSlice.actions;
 
 export default playerSlice.reducer;

@@ -18,21 +18,25 @@ const RelatedSongs = ({ data, artistId, isPlaying, activeSong }) => {
 
   return (
     <div className="flex flex-col">
-      <h1 className="font-bold text-3xl text-white">Related Songs:</h1>
+      <h1 className="font-bold text-3xl text-white">Bài Hát Liên Quan:</h1>
 
       <div className="mt-6 w-full flex flex-col">
-        {data?.map((song, i) => (
-          <SongBar
-            key={`${artistId}-${song.id}-${i}`}
-            song={song}
-            i={i}
-            artistId={artistId}
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            handlePauseClick={handlePauseClick}
-            handlePlayClick={() => handlePlayClick(song, i)}
-          />
-        ))}
+        {data?.length > 0 ? (
+          data.map((song, i) => (
+            <SongBar
+              key={song.id ? `${song.id}-${i}` : `song-${i}`}
+              song={song}
+              i={i}
+              artistId={artistId}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              handlePauseClick={handlePauseClick}
+              handlePlayClick={() => handlePlayClick(song, i)}
+            />
+          ))
+        ) : (
+          <p className="text-gray-400 text-lg">Không có bài hát liên quan</p>
+        )}
       </div>
     </div>
   );

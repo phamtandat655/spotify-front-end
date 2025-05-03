@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetUserProfileQuery, useUpdateUserProfileMutation } from '../redux/services/spotifyApi';
+import { useGetUserProfileQuery, useGetUserAlbumsQuery, useLogoutUserMutation } from '../redux/services/spotifyApi';
 import { Loader, Error } from '../components';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId'); // Get user ID from localStorage
-  const { data: user, isFetching, error } = useGetUserProfileQuery(userId);
-  const [updateUserProfile, { isLoading: isUpdating }] = useUpdateUserProfileMutation();
+  const userId = localStorage.getItem('userId');
+  const { data: user, isFetching, error } = useGetUserProfileQuery();
+  const { data: albums, isFetching: isFetchingAlbums, error: albumsError } = useGetUserAlbumsQuery(userId);
+  const [logoutUser, { isLoading: isLoggingOut }] = useLogoutUserMutation();
 
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState('');
@@ -15,87 +16,89 @@ const Profile = () => {
   const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
-      if (!userId) {
-        navigate('/login');
-      }
-    }, [userId])
+    if (!userId) {
+      navigate('/login');
+    }
+  }, [userId, navigate]);
 
-  // Initialize form fields when user data is fetched
   useEffect(() => {
     if (user) {
-      setName(user.name);
-      setEmail(user.email);
+      setName(user.name || '');
+      setEmail(user.email || '');
     }
   }, [user]);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
 
-    if (!name.trim()) errors.name = 'Name is required';
-    if (!email.trim()) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = 'Invalid email format';
+    if (!name.trim()) errors.name = 'Tên là bắt buộc';
+    if (!email.trim()) errors.email = 'Email là bắt buộc';
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = 'Định dạng email không hợp lệ';
 
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      try {
-        await updateUserProfile({ userId, name, email }).unwrap();
-        setEditMode(false);
-      } catch (err) {
-        setFormErrors({ submit: err.data || 'Failed to update profile' });
-      }
+      // Tạm thời hiển thị thông báo vì endpoint PUT /user/me/ chưa tồn tại
+      alert('Tính năng cập nhật hồ sơ hiện chưa khả dụng. Vui lòng liên hệ quản trị viên.');
+      setEditMode(false);
     }
   };
 
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem('userId');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logoutUser().unwrap();
+      localStorage.removeItem('userId');
+      navigate('/login');
+    } catch (err) {
+      alert(err.data?.message || 'Đăng xuất thất bại');
+    }
   };
 
-  const handleClickAlbum = () => {
-    navigate('/your-album');
-  }
+  const handleClickAlbum = (albumId) => {
+    // Tạm thời hiển thị thông báo vì route /album/:albumId chưa tồn tại
+    alert(`Tính năng xem chi tiết album ${albumId} hiện chưa khả dụng.`);
+    // Nếu thêm route trong App.jsx, có thể sử dụng:
+    // navigate(`/album/${albumId}`);
+  };
 
-  if (isFetching) return <Loader title="Loading profile..." />;
-  if (error) return <Error message={error.data || 'Failed to load profile'} />;
+  if (isFetching) return <Loader title="Đang tải hồ sơ..." />;
+  if (error) return <Error message={error.data?.detail || 'Tải hồ sơ thất bại'} />;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-white">
+    <div className="max-w-4xl mx-auto p-6 bg-spotify-black rounded-lg shadow-lg text-white">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">User Profile</h1>
+        <h1 className="text-2xl font-bold">Hồ Sơ Người Dùng</h1>
         <button
           onClick={handleLogout}
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          disabled={isLoggingOut}
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:bg-red-300"
         >
-          Logout
+          Đăng Xuất
         </button>
       </div>
 
-      {/* User Information */}
       <div className="mb-8">
         {editMode ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-1">
-                Name
+              <label htmlFor="name" className="block text-sm font-medium mb-1 text-spotify-light-gray">
+                Tên
               </label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your name"
+                className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
+                placeholder="Nhập tên của bạn"
               />
               {formErrors.name && (
                 <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
               )}
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
+              <label htmlFor="email" className="block text-sm font-medium mb-1 text-spotify-light-gray">
                 Email
               </label>
               <input
@@ -103,8 +106,8 @@ const Profile = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email"
+                className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
+                placeholder="Nhập email của bạn"
               />
               {formErrors.email && (
                 <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
@@ -116,65 +119,70 @@ const Profile = () => {
             <div className="flex space-x-4">
               <button
                 type="submit"
-                disabled={isUpdating}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-blue-300"
+                className="px-4 py-2 bg-spotify-green text-white rounded-lg hover:bg-green-600"
               >
-                Save
+                Lưu
               </button>
               <button
                 type="button"
                 onClick={() => setEditMode(false)}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
               >
-                Cancel
+                Hủy
               </button>
             </div>
           </form>
         ) : (
           <div className="space-y-4">
             <p>
-              <strong>Name:</strong> {user.name}
+              <strong>Tên:</strong> {user?.name || 'N/A'}
             </p>
             <p>
-              <strong>Email:</strong> {user.email}
+              <strong>Email:</strong> {user?.email || 'N/A'}
             </p>
             <button
               onClick={() => setEditMode(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="px-4 py-2 bg-spotify-green text-white rounded-lg hover:bg-green-600"
             >
-              Edit Profile
+              Chỉnh Sửa Hồ Sơ
             </button>
           </div>
         )}
       </div>
 
-      {/* User Albums */}
-      <div className='cursor-pointer' onClick={handleClickAlbum}>
-        <h2 className="text-xl font-bold mb-4">Your Albums</h2>
-        {user.albums.length > 0 ? (
+      <div>
+        <h2 className="text-xl font-bold mb-4">Album Của Bạn</h2>
+        {isFetchingAlbums ? (
+          <Loader title="Đang tải album..." />
+        ) : albumsError ? (
+          <Error message={albumsError.data?.detail || 'Tải album thất bại'} />
+        ) : albums?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {user.albums.map((album) => (
+            {albums.map((album) => (
               <div
-                key={album.id}
-                className="p-4 bg-gray-700 rounded-lg flex items-center space-x-4"
+                key={album.album_id}
+                onClick={() => handleClickAlbum(album.album_id)}
+                className="p-4 bg-spotify-dark-gray rounded-lg flex items-center space-x-4 cursor-pointer hover:bg-gray-600"
               >
                 <img
-                  src={album.image}
+                  src="https://picsum.photos/50"
                   alt={album.name}
                   className="w-16 h-16 object-cover rounded-lg"
                 />
                 <div>
                   <h3 className="font-semibold">{album.name}</h3>
-                  <p className="text-gray-400">{album.artist.name}</p>
-                  <p className="text-sm text-gray-400">
-                    {album.tracks.length} song{album.tracks.length !== 1 ? 's' : ''}
+                  <p className="text-sm text-spotify-light-gray">
+                    Tạo ngày: {new Date(album.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-spotify-light-gray">
+                    (Chi tiết bài hát hiện chưa khả dụng)
                   </p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-400">You have no albums yet.</p>
+          <p className="text-spotify-light-gray">Bạn chưa có album nào.</p>
         )}
       </div>
     </div>

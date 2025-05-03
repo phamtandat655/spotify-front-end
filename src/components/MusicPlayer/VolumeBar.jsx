@@ -14,6 +14,7 @@ const VolumeBar = ({ value, min, max, onChange, setVolume }) => (
       max={max}
       onChange={onChange}
       className="2xl:w-40 lg:w-32 md:w-32 h-1 ml-2"
+      title={`Âm lượng: ${(value * 100).toFixed(0)}%`}
     />
   </div>
 );

@@ -18,11 +18,10 @@ const SongCard = ({ song, isPlaying, activeSong, data, i }) => {
     dispatch(playPause(true));
   };
 
-  // Sử dụng song.name làm title và song.id làm key
-  const songTitle = song.name || 'Unknown Title';
+  const songTitle = song.name || 'Không rõ tiêu đề';
   const songKey = song.id || `song-${i}`;
-  const songSubtitle = song.artist?.name || 'Unknown Artist';
-  const artistId = song.artist?.id || 'unknown-artist';
+  const songSubtitle = song.artist?.name || 'Không rõ nghệ sĩ';
+  const artistId = song.artist?.id || null;
 
   return (
     <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
@@ -33,7 +32,7 @@ const SongCard = ({ song, isPlaying, activeSong, data, i }) => {
           }`}
         >
           <PlayPause
-            isPlaying={isPlaying && activeSong?.id === song.id} // Chỉ play nếu bài hát đang active
+            isPlaying={isPlaying && activeSong?.id === song.id}
             activeSong={activeSong}
             song={song}
             handlePause={handlePauseClick}
@@ -52,7 +51,11 @@ const SongCard = ({ song, isPlaying, activeSong, data, i }) => {
           <Link to={`/songs/${songKey}`}>{songTitle}</Link>
         </p>
         <p className="text-sm truncate text-gray-300 mt-1">
-          <Link to={artistId ? `/artist/${artistId}` : '/top-artist'}>{songSubtitle}</Link>
+          {artistId ? (
+            <Link to={`/artist/${artistId}`}>{songSubtitle}</Link>
+          ) : (
+            songSubtitle
+          )}
         </p>
       </div>
     </div>

@@ -19,7 +19,7 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
   // Handle volume changes
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.volume = volume; // HTML5 video volume is 0 to 1
+      videoRef.current.volume = volume;
     }
   }, [volume]);
 
@@ -34,7 +34,7 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
   useEffect(() => {
     if (videoRef.current && activeSong?.video_url) {
       videoRef.current.src = activeSong.video_url;
-      videoRef.current.load(); // Load new video
+      videoRef.current.load();
       if (isPlaying) {
         videoRef.current.play().catch((error) => {
           console.error('Error playing video:', error);
@@ -44,21 +44,21 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
   }, [activeSong, isPlaying]);
 
   return (
-    <div className="w-full h-64">
+    <div className="w-full h-64 bg-gray-800 rounded-lg overflow-hidden">
       {activeSong?.video_url ? (
         <video
           ref={videoRef}
-          className="w-full h-full object-contain rounded-lg"
+          className="w-full h-full object-contain"
           onEnded={onEnded}
           controls
-          muted={volume === 0} // Mute if volume is 0
+          muted={volume === 0}
         >
           <source src={activeSong.video_url} type="video/mp4" />
-          Your browser does not support the video tag.
+          Trình duyệt của bạn không hỗ trợ thẻ video.
         </video>
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
-          <p className="text-gray-400">No video selected</p>
+        <div className="w-full h-full flex items-center justify-center bg-gray-800">
+          <p className="text-gray-400 text-lg">Không có video được chọn</p>
         </div>
       )}
     </div>

@@ -11,6 +11,7 @@ const Controls = ({ isPlaying, currentSongs, handlePlayPause, handlePrevSong, ha
           minimal ? 'h-6 w-6' : 'h-8 w-8'
         } text-white hover:text-gray-300 disabled:text-gray-600 focus:outline-none`}
         aria-label="Previous song"
+        title="Bài trước"
       >
         <BackwardIcon />
       </button>
@@ -21,6 +22,7 @@ const Controls = ({ isPlaying, currentSongs, handlePlayPause, handlePrevSong, ha
           minimal ? 'h-8 w-8' : 'h-10 w-10'
         } text-white hover:text-gray-300 disabled:text-gray-600 focus:outline-none`}
         aria-label={isPlaying ? 'Pause' : 'Play'}
+        title={isPlaying ? 'Tạm dừng' : 'Phát'}
       >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
       </button>
@@ -31,6 +33,7 @@ const Controls = ({ isPlaying, currentSongs, handlePlayPause, handlePrevSong, ha
           minimal ? 'h-6 w-6' : 'h-8 w-8'
         } text-white hover:text-gray-300 disabled:text-gray-600 focus:outline-none`}
         aria-label="Next song"
+        title="Bài tiếp theo"
       >
         <ForwardIcon />
       </button>

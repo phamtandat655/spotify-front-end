@@ -14,19 +14,19 @@ const SongBar = ({ song, i, artistId, isPlaying, activeSong, handlePauseClick, h
     <div className="flex-1 flex flex-row justify-between items-center">
       <img
         className="w-20 h-20 rounded-lg"
-        src={song?.album?.image || 'https://via.placeholder.com/150'}
-        alt={song?.name}
+        src={song?.image || 'https://via.placeholder.com/150'}
+        alt={song?.name || 'Bài hát'}
       />
       <div className="flex-1 flex flex-col justify-center mx-3">
         {!artistId ? (
-          <Link to={`/songs/${song.id}`}>
-            <p className="text-xl font-bold text-white">{song?.name}</p>
+          <Link to={song?.id ? `/songs/${song.id}` : '#'}>
+            <p className="text-xl font-bold text-white">{song?.name || 'Không rõ tiêu đề'}</p>
           </Link>
         ) : (
-          <p className="text-xl font-bold text-white">{song?.name}</p>
+          <p className="text-xl font-bold text-white">{song?.name || 'Không rõ tiêu đề'}</p>
         )}
         <p className="text-base text-gray-300 mt-1">
-          {artistId ? song?.artists?.name : song?.album?.name || 'Unknown Artist'}
+          {artistId ? song?.artist?.name : song?.genre || 'Không rõ thể loại'}
         </p>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { mockApi } from './services/spotifyApi'; 
+import { spotifyApi } from './services/spotifyApi';
 import playerReducer from './features/playerSlice';
 
 export const store = configureStore({
   reducer: {
-    [mockApi.reducerPath]: mockApi.reducer,
+    [spotifyApi.reducerPath]: spotifyApi.reducer,
     player: playerReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(mockApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(spotifyApi.middleware),
 });

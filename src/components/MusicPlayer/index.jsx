@@ -42,10 +42,15 @@ const MusicPlayer = () => {
   };
 
   const toggleMinimize = () => {
+    if (!isMinimized) {
+      dispatch(playPause(false));
+    } else {
+      dispatch(playPause(true));
+    }
     setIsMinimized(!isMinimized);
   };
 
-  if (!isActive) return null; // Hide player if no active song
+  if (!isActive || !activeSong) return null;
 
   return (
     <div
@@ -60,16 +65,16 @@ const MusicPlayer = () => {
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center space-x-4">
             <img
-              src={activeSong?.album?.image || 'https://picsum.photos/50'}
-              alt={activeSong?.name}
+              src={activeSong?.preview_url || 'https://via.placeholder.com/50'}
+              alt={activeSong?.name || 'Bài hát'}
               className="w-12 h-12 object-cover rounded-lg"
             />
             <div>
               <p className="text-white font-semibold text-sm truncate max-w-[150px]">
-                {activeSong?.name || 'No active song'}
+                {activeSong?.name || 'Không có bài hát'}
               </p>
               <p className="text-gray-400 text-xs truncate max-w-[150px]">
-                {activeSong?.artist?.name || 'Unknown Artist'}
+                {activeSong?.artist?.name || 'Không rõ nghệ sĩ'}
               </p>
             </div>
           </div>
@@ -80,12 +85,13 @@ const MusicPlayer = () => {
               handlePlayPause={handlePlayPause}
               handlePrevSong={handlePrevSong}
               handleNextSong={handleNextSong}
-              minimal // Pass prop to render minimal controls
+              minimal
             />
             <button
               onClick={toggleMinimize}
               className="text-white hover:text-gray-300 focus:outline-none"
               aria-label="Maximize player"
+              title="Mở rộng trình phát"
             >
               <ChevronUpIcon className="h-6 w-6" />
             </button>
@@ -108,6 +114,7 @@ const MusicPlayer = () => {
                 onClick={toggleMinimize}
                 className="text-white hover:text-gray-300 focus:outline-none"
                 aria-label="Minimize player"
+                title="Thu nhỏ trình phát"
               >
                 <ChevronDownIcon className="h-6 w-6" />
               </button>
