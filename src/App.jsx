@@ -1,12 +1,18 @@
-import { useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 
-import { Searchbar, Sidebar, MusicPlayer } from './components';
-import { ArtistDetails, YourAlbum, Discover, Search, SongDetails } from './pages';
-import CreateAlbum from './pages/CreateAlbum';
-import Profile from './pages/Profile';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import { Searchbar, Sidebar, MusicPlayer } from "./components";
+import {
+  ArtistDetails,
+  YourAlbum,
+  Discover,
+  Search,
+  SongDetails,
+} from "./pages";
+import CreateAlbum from "./pages/CreateAlbum";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App = () => {
   const { activeSong } = useSelector((state) => state.player);
@@ -24,6 +30,7 @@ const App = () => {
               <Route path="/your-album" element={<YourAlbum />} />
               <Route path="/artist/:id" element={<ArtistDetails />} />
               <Route path="/songs/:songid" element={<SongDetails />} />
+              <Route path="/search" element={<Search />} />
               <Route path="/search/:searchTerm" element={<Search />} />
               <Route path="/create-album" element={<CreateAlbum />} />
               <Route path="/profile" element={<Profile />} />

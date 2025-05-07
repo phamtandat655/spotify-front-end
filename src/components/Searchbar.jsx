@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch } from "react-icons/fi";
 
 const Searchbar = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,11 +13,17 @@ const Searchbar = () => {
     const trimmedTerm = searchTerm.trim();
     if (trimmedTerm) {
       navigate(`/search/${encodeURIComponent(trimmedTerm)}`);
+    } else {
+      navigate("/search");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off" className="p-2 text-gray-400 bg-slate-900 focus-within:text-gray-600">
+    <form
+      onSubmit={handleSubmit}
+      autoComplete="off"
+      className="p-2 text-gray-400 bg-slate-900 focus-within:text-gray-600"
+    >
       <label htmlFor="search-field" className="sr-only">
         Tìm kiếm bài hát
       </label>

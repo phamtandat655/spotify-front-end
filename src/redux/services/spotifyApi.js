@@ -120,7 +120,7 @@ const spotifyApi = {
   getSongsBySearch: async (searchTerm) => {
     try {
       const response = await axiosBase.get('music/tracks/search', {
-        params: searchTerm ? { search_name: searchTerm } : {search_name: "pop"},
+        params: searchTerm ? { search_name: searchTerm } : {search_name: ""},
       });
       return { data: { tracks: response.data.songsBySearch?.tracks || [] } };
     } catch (error) {
