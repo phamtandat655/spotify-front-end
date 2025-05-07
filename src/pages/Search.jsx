@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Error, Loader, SongCard } from '../components';
-import { useGetSongsBySearchQuery } from '../redux/services/spotifyApi';
+import { spotifyApi } from '../redux/services/spotifyApi';
 
 const Search = () => {
   const { searchTerm } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data: searchData, isFetching, error } = useGetSongsBySearchQuery(searchTerm || '');
+  const [songs, setSongs] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState(null);
 
-  const songs = searchData?.tracks || [];
+  useEffect(() => {
+    const fetchSongs = async () => {
+      setIsFetching(true);
+      const response = await spotifyApi.getSongsBySearch(searchTerm || '');
+      if (response.error) {
+        setError(response.error);
+      } else {
+        setSongs(response.data.tracks || []);
+      }
+      setIsFetching(false);
+    };
+    fetchSongs();
+  }, [searchTerm]);
 
   if (isFetching) {
     return <Loader title={searchTerm ? `Đang tìm kiếm "${searchTerm}"...` : 'Đang tải tất cả bài hát...'} />;

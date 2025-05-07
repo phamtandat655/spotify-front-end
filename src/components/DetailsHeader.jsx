@@ -34,7 +34,7 @@ const DetailsHeader = ({ artistData, songData }) => {
       <div className="absolute inset-0 flex items-center">
         <img
           alt="song cover"
-          src={songData?.image || 'https://via.placeholder.com/150'}
+          src={songData?.preview_url || 'https://via.placeholder.com/150'}
           className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
         />
 
@@ -43,7 +43,7 @@ const DetailsHeader = ({ artistData, songData }) => {
           <Link to={songData?.artist?.id ? `/artist/${songData.artist.id}` : '/'}>
             <p className="text-base text-gray-400 mt-2">{songData?.artist?.name || 'Không rõ nghệ sĩ'}</p>
           </Link>
-          <p className="text-base text-gray-400 mt-2">{songData?.genre || 'Không rõ thể loại'}</p>
+          <p className="text-base text-gray-400 mt-2">Nằm trong album : {songData?.album?.name || 'Không rõ'}</p>
         </div>
       </div>
 

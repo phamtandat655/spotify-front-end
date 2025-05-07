@@ -1,24 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Error, Loader, SongCard } from '../components';
 import { selectGenre } from '../redux/features/playerSlice';
-import { useGetSongsByGenreQuery } from '../redux/services/spotifyApi';
+import { spotifyApi } from '../redux/services/spotifyApi';
 
 const Discover = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { genre } = useSelector((state) => state.player);
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data: songsData, isFetching: isFetchingSongs, error: songsError } = useGetSongsByGenreQuery(genre || 'pop');
+  const [songsData, setSongsData] = useState({ tracks: [] });
+  const [isFetchingSongs, setIsFetchingSongs] = useState(true);
+  const [songsError, setSongsError] = useState(null);
+  const [genres, setGenres] = useState([]);
+  const [isFetchingGenres, setIsFetchingGenres] = useState(true);
+  const [genresError, setGenresError] = useState(null);
 
-  if (isFetchingSongs) return <Loader title="Đang tải bài hát..." />;
+  // Fetch genres
+  useEffect(() => {
+    const fetchGenres = async () => {
+      setIsFetchingGenres(true);
+      const response = await spotifyApi.getGenres();
+      if (response.error) {
+        setGenresError(response.error);
+        // Fallback to default genres if API fails
+        setGenres([
+          { id: 1, name: 'Pop' },
+          { id: 2, name: 'Rock' }
+        ]);
+      } else {
+        setGenres(response.data);
+      }
+      setIsFetchingGenres(false);
+    };
+    fetchGenres();
+  }, []);
+
+  // Fetch songs by genre
+  useEffect(() => {
+    const fetchSongs = async () => {
+      setIsFetchingSongs(true);
+      const response = await spotifyApi.getSongsByGenre(genre || 'pop');
+      if (response.error) {
+        setSongsError(response.error);
+      } else {
+        setSongsData({ tracks: response.data || [] });
+      }
+      setIsFetchingSongs(false);
+    };
+    fetchSongs();
+  }, [genre]);
+
+  // Normalize genre name for display
+  const normalizeGenreDisplay = (genreName) => {
+    if (genreName.toLowerCase() === 'pop') return 'Pop';
+    if (genreName.toLowerCase() === 'hip-hop') return 'Hip-Hop';
+    if (genreName.toLowerCase() === 'r&b') return 'R&B';
+    return genreName.charAt(0).toUpperCase() + genreName.slice(1);
+  };
+
+  // Normalize genre name for API
+  const normalizeGenreValue = (genreName) => {
+    if (genreName.toLowerCase() === 'hip-hop') return 'hiphop';
+    if (genreName.toLowerCase() === 'r&b') return 'rnb';
+    return genreName.toLowerCase();
+  };
+
+  if (isFetchingSongs || isFetchingGenres) return <Loader title="Đang tải dữ liệu..." />;
 
   if (songsError) {
     return <Error message={songsError?.data?.detail || 'Tải dữ liệu thất bại'} />;
   }
 
-  const genreTitle = genre === 'pop' ? 'Pop' : genre.charAt(0).toUpperCase() + genre.slice(1);
+  if (genresError) {
+    console.warn('Failed to load genres:', genresError.data?.detail || 'Unknown error');
+  }
+
+  const genreTitle = normalizeGenreDisplay(genre || 'pop');
 
   return (
     <div className="flex flex-col bg-spotify-black p-6">
@@ -31,11 +90,11 @@ const Discover = () => {
             value={genre || 'pop'}
             className="bg-spotify-dark-gray text-spotify-light-gray px-4 py-2 text-sm rounded-lg outline-none sm:mt-0 mt-5"
           >
-            <option value="pop">Pop</option>
-            <option value="rock">Rock</option>
-            <option value="hiphop">Hip-Hop</option>
-            <option value="jazz">Jazz</option>
-            <option value="classical">Cổ Điển</option>
+            {genres.map((g) => (
+              <option key={g.id} value={normalizeGenreValue(g.name)}>
+                {normalizeGenreDisplay(g.name)}
+              </option>
+            ))}
           </select>
 
           <button

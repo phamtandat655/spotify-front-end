@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useLoginUserMutation, useGetUserProfileQuery } from '../redux/services/spotifyApi';
+import { spotifyApi } from '../redux/services/spotifyApi';
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  const [loginUser, { isLoading }] = useLoginUserMutation();
-  const { refetch: refetchUserProfile } = useGetUserProfileQuery();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,13 +19,22 @@ const Login = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true);
       try {
-        await loginUser({ username, password }).unwrap();
-        const userProfile = await refetchUserProfile().unwrap();
-        localStorage.setItem('userId', userProfile.id || 'unknown');
+        const resp = await spotifyApi.loginUser({ username, password });
+        if (resp.error) {
+          throw resp.error;
+        }
+        const userProfile = await spotifyApi.getUserProfile();
+        if (userProfile.error) {
+          throw userProfile.error;
+        }
+        localStorage.setItem('userId', userProfile.data.id || 'unknown');
         navigate('/profile');
       } catch (err) {
-        setErrors({ submit: err.data?.error || 'Sai tên người dùng hoặc mật khẩu' });
+        setErrors({ submit: err.data?.message || 'Sai tên người dùng hoặc mật khẩu' });
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -37,7 +45,7 @@ const Login = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="username" className="block text-sm font-medium mb-1 text-[#b3b3b3]">
-            Tên Người Dùng
+            Tên đăng nhập 
           </label>
           <input
             type="text"
@@ -60,7 +68,7 @@ const Login = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 bg-[#242424] border border-[#3f3f3f] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1db954] text-white placeholder-[#b3b3b3]"
+            className="w-full p-2 bg-[#242424] border border-[#3f3f3f] rounded-lg-political-none focus:ring-2 focus:ring-[#1db954] text-white placeholder-[#b3b3b3]"
             placeholder="Nhập mật khẩu"
           />
           {errors.password && (

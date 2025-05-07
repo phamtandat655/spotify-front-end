@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetUserProfileQuery, useGetUserAlbumsQuery, useLogoutUserMutation } from '../redux/services/spotifyApi';
+import { spotifyApi } from '../redux/services/spotifyApi';
 import { Loader, Error } from '../components';
 
 const Profile = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
-  const { data: user, isFetching, error } = useGetUserProfileQuery();
-  const { data: albums, isFetching: isFetchingAlbums, error: albumsError } = useGetUserAlbumsQuery(userId);
-  const [logoutUser, { isLoading: isLoggingOut }] = useLogoutUserMutation();
-
+  const [user, setUser] = useState(null);
+  const [albums, setAlbums] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [isFetchingAlbums, setIsFetchingAlbums] = useState(true);
+  const [error, setError] = useState(null);
+  const [albumsError, setAlbumsError] = useState(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,15 +21,31 @@ const Profile = () => {
   useEffect(() => {
     if (!userId) {
       navigate('/login');
+    } else {
+      const fetchData = async () => {
+        setIsFetching(true);
+        const userProfile = await spotifyApi.getUserProfile();
+        if (userProfile.error) {
+          setError(userProfile.error);
+        } else {
+          setUser(userProfile.data);
+          setName(userProfile.data.name || '');
+          setEmail(userProfile.data.email || '');
+        }
+        setIsFetching(false);
+
+        setIsFetchingAlbums(true);
+        const albumsData = await spotifyApi.getUserAlbums(userId);
+        if (albumsData.error) {
+          setAlbumsError(albumsData.error);
+        } else {
+          setAlbums(albumsData.data || []);
+        }
+        setIsFetchingAlbums(false);
+      };
+      fetchData();
     }
   }, [userId, navigate]);
-
-  useEffect(() => {
-    if (user) {
-      setName(user.name || '');
-      setEmail(user.email || '');
-    }
-  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,12 +65,18 @@ const Profile = () => {
   };
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
-      await logoutUser().unwrap();
+      const resp = await spotifyApi.logoutUser();
+      if (resp.error) {
+        throw resp.error;
+      }
       localStorage.removeItem('userId');
       navigate('/login');
     } catch (err) {
       alert(err.data?.message || 'Đăng xuất thất bại');
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
@@ -66,7 +91,7 @@ const Profile = () => {
   if (error) return <Error message={error.data?.detail || 'Tải hồ sơ thất bại'} />;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-spotify-black rounded-lg shadow-lg text-white">
+    <div className="max-w-4xl mx-auto p-6 bgFen-spotify-black rounded-lg shadow-lg bg-[#121212] text-white">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Hồ Sơ Người Dùng</h1>
         <button
@@ -90,7 +115,7 @@ const Profile = () => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
+                className="bg-white text-[#121212] w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
                 placeholder="Nhập tên của bạn"
               />
               {formErrors.name && (
@@ -106,7 +131,7 @@ const Profile = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
+                className="bg-white text-[#121212] w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
                 placeholder="Nhập email của bạn"
               />
               {formErrors.email && (
@@ -119,7 +144,7 @@ const Profile = () => {
             <div className="flex space-x-4">
               <button
                 type="submit"
-                className="px-4 py-2 bg-spotify-green text-white rounded-lg hover:bg-green-600"
+                className="px-4 py-2 bg-spotify-green text-white rounded-lg bg-green-600 hover:bg-green-700"
               >
                 Lưu
               </button>
@@ -142,7 +167,7 @@ const Profile = () => {
             </p>
             <button
               onClick={() => setEditMode(true)}
-              className="px-4 py-2 bg-spotify-green text-white rounded-lg hover:bg-green-600"
+              className="px-4 py-2 bg-spotify-green text-white rounded-lg bg-green-600 hover:bg-green-700"
             >
               Chỉnh Sửa Hồ Sơ
             </button>
@@ -172,10 +197,7 @@ const Profile = () => {
                 <div>
                   <h3 className="font-semibold">{album.name}</h3>
                   <p className="text-sm text-spotify-light-gray">
-                    Tạo ngày: {new Date(album.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-sm text-spotify-light-gray">
-                    (Chi tiết bài hát hiện chưa khả dụng)
+                    Có: {album?.tracks?.length} bài hát
                   </p>
                 </div>
               </div>

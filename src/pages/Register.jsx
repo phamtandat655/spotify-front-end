@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useRegisterUserMutation } from '../redux/services/spotifyApi';
+import { spotifyApi } from '../redux/services/spotifyApi';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [errors, setErrors] = useState({});
-  const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +27,12 @@ const Register = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true);
       try {
-        await registerUser({ name, email, username, password }).unwrap();
+        const resp = await spotifyApi.registerUser({ name, email, username, password });
+        if (resp.error) {
+          throw resp.error;
+        }
         navigate('/login');
       } catch (err) {
         const apiErrors = err.data || {};
@@ -40,6 +44,8 @@ const Register = () => {
           password2: apiErrors.password2?.[0],
           submit: apiErrors.non_field_errors?.[0] || 'Đăng ký thất bại',
         });
+      } finally {
+        setIsLoading(false);
       }
     }
   };

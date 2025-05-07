@@ -1,30 +1,70 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
-import { useGetArtistDetailsQuery } from '../redux/services/spotifyApi';
+import { useSelector, useDispatch } from 'react-redux';
+import { DetailsHeader, Error, Loader, SongCard } from '../components';
+import { setActiveSong, playPause } from '../redux/features/playerSlice';
+import { spotifyApi } from '../redux/services/spotifyApi';
 
 const ArtistDetails = () => {
+  const dispatch = useDispatch();
   const { id: artistId } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data: artistData, isFetching: isFetchingArtistDetails, error } = useGetArtistDetailsQuery(artistId);
+  const [artistData, setArtistData] = useState(null);
+  const [isFetchingArtistDetails, setIsFetchingArtistDetails] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchArtistDetails = async () => {
+      setIsFetchingArtistDetails(true);
+      const response = await spotifyApi.getArtistDetails(artistId);
+      if (response.error) {
+        setError(response.error);
+      } else {
+        setArtistData(response.data);
+      }
+      setIsFetchingArtistDetails(false);
+    };
+    fetchArtistDetails();
+  }, [artistId]);
+
+  const handlePauseClick = () => {
+    dispatch(playPause(false));
+  };
+
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data: artistData?.top_songs || [], i }));
+    dispatch(playPause(true));
+  };
 
   if (isFetchingArtistDetails) return <Loader title="Đang tải chi tiết nghệ sĩ..." />;
-
   if (error) return <Error message={error.data?.detail || 'Tải chi tiết nghệ sĩ thất bại'} />;
-
   if (!artistData) return <div className="text-white p-6">Không tìm thấy nghệ sĩ.</div>;
 
   return (
     <div className="flex flex-col bg-spotify-black p-6">
-      <DetailsHeader artistData={artistData.artist} />
+      <DetailsHeader artistData={artistData} />
 
-      <RelatedSongs
-        data={artistData.tracks}
-        artistId={artistId}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-      />
+      <div className="mb-10">
+        <h2 className="text-white text-3xl font-bold mb-5">Bài Hát Hàng Đầu</h2>
+        {artistData.top_songs && artistData.top_songs.length > 0 ? (
+          <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+            {artistData.top_songs.map((song, i) => (
+              <SongCard
+                key={song.id}
+                song={song}
+                isPlaying={isPlaying}
+                activeSong={activeSong}
+                data={artistData.top_songs}
+                i={i}
+                handlePauseClick={handlePauseClick}
+                handlePlayClick={() => handlePlayClick(song, i)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-spotify-light-gray text-lg">Không có bài hát hàng đầu</p>
+        )}
+      </div>
     </div>
   );
 };
