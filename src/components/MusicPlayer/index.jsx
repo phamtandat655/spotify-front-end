@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 
-import { nextSong, prevSong, playPause } from '../../redux/features/playerSlice';
-import Controls from '../../components/MusicPlayer/Controls';
-import Player from '../../components/MusicPlayer/Player';
-import Track from '../../components/MusicPlayer/Track';
-import VolumeBar from '../../components/MusicPlayer/VolumeBar';
+import {
+  nextSong,
+  prevSong,
+  playPause,
+} from "../../redux/features/playerSlice";
+import Controls from "../../components/MusicPlayer/Controls";
+import Player from "../../components/MusicPlayer/Player";
+import Track from "../../components/MusicPlayer/Track";
+import VolumeBar from "../../components/MusicPlayer/VolumeBar";
 
 const MusicPlayer = () => {
-  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } = useSelector((state) => state.player);
+  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
+    useSelector((state) => state.player);
   const [volume, setVolume] = useState(0.3);
   const [isMinimized, setIsMinimized] = useState(false);
   const dispatch = useDispatch();
@@ -56,8 +61,8 @@ const MusicPlayer = () => {
     <div
       className={`w-full ${
         isMinimized
-          ? 'fixed bottom-0 left-0 bg-gray-800 shadow-lg z-50'
-          : 'relative sm:px-12 py-3 px-8 flex flex-col items-center'
+          ? "fixed bottom-0 left-0 bg-gray-800 shadow-lg z-50"
+          : "relative sm:px-12 py-3 px-8 flex flex-col items-center"
       }`}
     >
       {isMinimized ? (
@@ -65,16 +70,16 @@ const MusicPlayer = () => {
         <div className="flex items-center justify-between px-4 py-3 mb-5">
           <div className="flex items-center space-x-4">
             <img
-              src={activeSong?.preview_url || 'https://via.placeholder.com/50'}
-              alt={activeSong?.name || 'Bài hát'}
+              src={activeSong?.preview_url || "https://via.placeholder.com/50"}
+              alt={activeSong?.name || "Bài hát"}
               className="w-12 h-12 object-cover rounded-lg"
             />
             <div>
               <p className="text-white font-semibold text-sm truncate max-w-[150px]">
-                {activeSong?.name || 'Không có bài hát'}
+                {activeSong?.name || "Không có bài hát"}
               </p>
               <p className="text-gray-400 text-xs truncate max-w-[150px]">
-                {activeSong?.artist?.name || 'Không rõ nghệ sĩ'}
+                {activeSong?.artist?.name || "Không rõ nghệ sĩ"}
               </p>
             </div>
           </div>
@@ -101,7 +106,11 @@ const MusicPlayer = () => {
         // Full View
         <>
           <div className="w-full flex items-center justify-between mb-4">
-            <Track isPlaying={isPlaying} isActive={isActive} activeSong={activeSong} />
+            <Track
+              isPlaying={isPlaying}
+              isActive={isActive}
+              activeSong={activeSong}
+            />
             <div className="flex items-center space-x-4">
               <VolumeBar
                 value={volume}
