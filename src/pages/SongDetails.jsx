@@ -12,33 +12,30 @@ const SongDetails = () => {
   const [songData, setSongData] = useState(null);
   const [relatedSongs, setRelatedSongs] = useState([]);
   const [isFetchingSong, setIsFetchingSong] = useState(true);
-  const [isFetchingRelated, setIsFetchingRelated] = useState(true);
   const [songError, setSongError] = useState(null);
-  const [relatedError, setRelatedError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsFetchingSong(true);
       const songResponse = await spotifyApi.getSongDetails(songid);
-      console.log(songResponse)
       if (songResponse.error) {
         setSongError(songResponse.error);
+        setSongData(null);
+        setRelatedSongs([]);
       } else {
         setSongData(songResponse.data);
+        setRelatedSongs(songResponse.data.relatedSongs || []);
       }
       setIsFetchingSong(false);
-
-      setIsFetchingRelated(true);
-      const relatedResponse = await spotifyApi.getSongRelated(songid);
-      if (relatedResponse.error) {
-        setRelatedError(relatedResponse.error);
-      } else {
-        setRelatedSongs(relatedResponse.data.tracks || []);
-      }
-      setIsFetchingRelated(false);
     };
     fetchData();
   }, [songid]);
+
+  useEffect(() => {
+    if (songError) {
+      console.error('Error:', songError);
+    }
+  }, [songError]);
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
@@ -65,16 +62,10 @@ const SongDetails = () => {
       </div> */}
 
       <div className="mb-10">
-        <h2 className="text-white text-3xl font-bold mb-5">Bài Hát Liên Quan</h2>
-        {isFetchingRelated ? (
-          <Loader title="Đang tải bài hát liên quan..." />
-        ) : relatedError ? (
-          <Error message={relatedError.data?.detail || 'Không tải được bài hát liên quan'} />
-        ) : relatedSongs.length === 0 ? (
-          <p className="text-spotify-light-gray text-lg">Không có bài hát liên quan</p>
-        ) : (
-          <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-            {relatedSongs.map((song, i) => (
+        <h2 className="text-white text-3xl font-bold">Bài Hát Liên Quan:</h2>
+        <div className="mt-5 flex flex-wrap sm:justify-start justify-center gap-8">
+          {relatedSongs.length > 0 ? (
+            relatedSongs.map((song, i) => (
               <SongCard
                 key={song.id}
                 song={song}
@@ -82,10 +73,14 @@ const SongDetails = () => {
                 activeSong={activeSong}
                 data={relatedSongs}
                 i={i}
+                handlePauseClick={handlePauseClick}
+                handlePlayClick={() => handlePlayClick(song, i)}
               />
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <p className="text-spotify-light-gray text-base">Không có bài hát liên quan.</p>
+          )}
+        </div>
       </div>
     </div>
   );

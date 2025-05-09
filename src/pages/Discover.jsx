@@ -26,8 +26,7 @@ const Discover = () => {
         setGenresError(response.error);
         // Fallback to default genres if API fails
         setGenres([
-          { id: 1, name: 'Pop' },
-          { id: 2, name: 'Rock' }
+          { id: 1, name: 'Pop' }
         ]);
       } else {
         setGenres(response.data);
@@ -41,7 +40,7 @@ const Discover = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       setIsFetchingSongs(true);
-      const response = await spotifyApi.getSongsByGenre(genre || 'pop');
+      const response = await spotifyApi.getSongsByGenre(genre || 'all');
       if (response.error) {
         setSongsError(response.error);
       } else {
@@ -54,17 +53,17 @@ const Discover = () => {
 
   // Normalize genre name for display
   const normalizeGenreDisplay = (genreName) => {
-    if (genreName.toLowerCase() === 'pop') return 'Pop';
-    if (genreName.toLowerCase() === 'hip-hop') return 'Hip-Hop';
-    if (genreName.toLowerCase() === 'r&b') return 'R&B';
+    const lowerName = genreName.toLowerCase();
+    if (lowerName === 'pop') return 'Pop';
+    if (lowerName === 'r&b') return 'R&B';
+    if (lowerName === 'indie pop') return 'Indie Pop';
+    if (lowerName === 'lo-fi') return 'Lo-fi';
+    if (lowerName === 'alternative r&b') return 'Alternative R&B';
+    if (lowerName === 'soul') return 'Soul';
+    if (lowerName === 'indie') return 'Indie';
+    if (lowerName === 'lo-fi electropop') return 'Lo-fi Electropop';
+    if (lowerName === 'gospel') return 'Gospel';
     return genreName.charAt(0).toUpperCase() + genreName.slice(1);
-  };
-
-  // Normalize genre name for API
-  const normalizeGenreValue = (genreName) => {
-    if (genreName.toLowerCase() === 'hip-hop') return 'hiphop';
-    if (genreName.toLowerCase() === 'r&b') return 'rnb';
-    return genreName.toLowerCase();
   };
 
   if (isFetchingSongs || isFetchingGenres) return <Loader title="Đang tải dữ liệu..." />;
@@ -77,7 +76,8 @@ const Discover = () => {
     console.warn('Failed to load genres:', genresError.data?.detail || 'Unknown error');
   }
 
-  const genreTitle = normalizeGenreDisplay(genre || 'pop');
+  const selectedGenre = genres.find((g) => g.id.toString() === genre) || { name: 'Tất cả' };
+  const genreTitle = normalizeGenreDisplay(selectedGenre.name);
 
   return (
     <div className="flex flex-col bg-spotify-black p-6">
@@ -87,11 +87,12 @@ const Discover = () => {
         <div className="flex justify-between items-center mb-4">
           <select
             onChange={(e) => dispatch(selectGenre(e.target.value))}
-            value={genre || 'pop'}
+            value={genre || 'all'}
             className="bg-spotify-dark-gray text-spotify-light-gray px-4 py-2 text-sm rounded-lg outline-none sm:mt-0 mt-5"
           >
+            <option value="all">Tất cả</option>
             {genres.map((g) => (
-              <option key={g.id} value={normalizeGenreValue(g.name)}>
+              <option key={g.id} value={g.id}>
                 {normalizeGenreDisplay(g.name)}
               </option>
             ))}
@@ -107,16 +108,20 @@ const Discover = () => {
       </div>
 
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {songsData?.tracks?.map((song, i) => (
-          <SongCard
-            key={song.id}
-            song={song}
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            data={songsData.tracks}
-            i={i}
-          />
-        )) || <p className="text-spotify-light-gray text-white text-3xl">Không có bài hát nào.</p>}
+        {songsData.tracks.length > 0 ? (
+          songsData.tracks.map((song, i) => (
+            <SongCard
+              key={song.id}
+              song={song}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              data={songsData.tracks}
+              i={i}
+            />
+          ))
+        ) : (
+          <p className="text-spotify-light-gray text-white text-3xl">Không có bài hát nào.</p>
+        )}
       </div>
     </div>
   );

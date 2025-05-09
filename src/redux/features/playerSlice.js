@@ -6,7 +6,7 @@ const initialState = {
   isActive: false,
   isPlaying: false,
   activeSong: {},
-  genre: 'pop', 
+  genre: 'all', 
 };
 
 const playerSlice = createSlice({

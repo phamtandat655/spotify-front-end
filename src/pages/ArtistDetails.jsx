@@ -17,6 +17,8 @@ const ArtistDetails = () => {
     const fetchArtistDetails = async () => {
       setIsFetchingArtistDetails(true);
       const response = await spotifyApi.getArtistDetails(artistId);
+      console.log('Artist ID:', artistId);
+      console.log('API Response:', response);
       if (response.error) {
         setError(response.error);
       } else {
@@ -32,6 +34,7 @@ const ArtistDetails = () => {
   };
 
   const handlePlayClick = (song, i) => {
+    console.log('Playing song:', song);
     dispatch(setActiveSong({ song, data: artistData?.top_songs || [], i }));
     dispatch(playPause(true));
   };
@@ -45,10 +48,10 @@ const ArtistDetails = () => {
       <DetailsHeader artistData={artistData} />
 
       <div className="mb-10">
-        <h2 className="text-white text-3xl font-bold mb-5">Bài Hát Hàng Đầu</h2>
-        {artistData.top_songs && artistData.top_songs.length > 0 ? (
-          <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-            {artistData.top_songs.map((song, i) => (
+        <h2 className="text-white text-3xl font-bold">Bài Hát Hàng Đầu:</h2>
+        <div className="mt-5 flex flex-wrap sm:justify-start justify-center gap-8">
+          {artistData.top_songs && artistData.top_songs.length > 0 ? (
+            artistData.top_songs.map((song, i) => (
               <SongCard
                 key={song.id}
                 song={song}
@@ -59,11 +62,11 @@ const ArtistDetails = () => {
                 handlePauseClick={handlePauseClick}
                 handlePlayClick={() => handlePlayClick(song, i)}
               />
-            ))}
-          </div>
-        ) : (
-          <p className="text-spotify-light-gray text-lg">Không có bài hát hàng đầu</p>
-        )}
+            ))
+          ) : (
+            <p className="text-spotify-light-gray text-base">Không có bài hát nào.</p>
+          )}
+        </div>
       </div>
     </div>
   );

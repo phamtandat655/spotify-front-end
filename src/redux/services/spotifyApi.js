@@ -92,13 +92,17 @@ const spotifyApi = {
     }
   },
 
-  getSongsByGenre: async (genreName) => {
+  getSongsByGenre: async (genreId) => {
     try {
-      const url = genreName === 'all' ? 'music/tracks/search?search_name=' : `music/tracks/genre/${genreName}/`;
-      const response = await axiosBase.get(url, { params: genreName === 'all' ? {} : undefined });
-      return { data: response.data.songsByGenre || response.data.songsBySearch?.tracks || [] };
+      const url = genreId === 'all' ? 'music/tracks/search' : `music/tracks/genre/${genreId}/`;
+      const response = await axiosBase.get(url);
+      return {
+        data: genreId === 'all' ? 
+          (response.data.songsBySearch?.tracks || []) : 
+          (response.data.songsByGenre?.tracks || [])
+      };
     } catch (error) {
-      if (error.response?.status === 404) {
+      if (error.response?.status === 404 || error.response?.status === 400) {
         return { data: [] };
       }
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
@@ -107,7 +111,7 @@ const spotifyApi = {
 
   getAllSongs: async () => {
     try {
-      const response = await axiosBase.get('music/tracks/search', { params: {search_name : ""} });
+      const response = await axiosBase.get('music/tracks/search', { });
       return { data: { tracks: response.data.songsBySearch?.tracks || [] } };
     } catch (error) {
       if (error.response?.status === 404) {
@@ -120,24 +124,12 @@ const spotifyApi = {
   getSongsBySearch: async (searchTerm) => {
     try {
       const response = await axiosBase.get('music/tracks/search', {
-        params: searchTerm ? { search_name: searchTerm } : {search_name: ""},
+        params: searchTerm ? { search_name: searchTerm } : { },
       });
       return { data: { tracks: response.data.songsBySearch?.tracks || [] } };
     } catch (error) {
       if (error.response?.status === 404 || error.response?.status === 400) {
         return { data: { tracks: [] } };
-      }
-      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
-    }
-  },
-
-  getArtistDetails: async (artistName) => {
-    try {
-      const response = await axiosBase.get(`music/tracks/artist/${artistName}/`);
-      return { data: response.data.artistDetails || {} };
-    } catch (error) {
-      if (error.response?.status === 404) {
-        return { data: {} };
       }
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }
@@ -359,9 +351,9 @@ const spotifyApi = {
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }
   },
-  getArtistDetails: async (artistName) => {
+  getArtistDetails: async (artistId) => {
     try {
-      const response = await axiosBase.get(`music/artist/details/${artistName}/`);
+      const response = await axiosBase.get(`music/artist/details/${artistId}/`);
       return { data: response.data.artistDetails || {} };
     } catch (error) {
       if (error.response?.status === 404) {
@@ -374,22 +366,15 @@ const spotifyApi = {
   getSongDetails: async (trackId) => {
     try {
       const response = await axiosBase.get(`music/tracks/tracksdetail/${trackId}/`);
-      return { data: response.data.songDetails || {} };
+      return {
+        data: {
+          ...response.data.songDetails,
+          relatedSongs: response.data.songDetails.relatedSongs || [],
+        },
+      };
     } catch (error) {
       if (error.response?.status === 404) {
-        return { data: {} };
-      }
-      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
-    }
-  },
-
-  getSongRelated: async (trackId) => {
-    try {
-      const response = await axiosBase.get(`music/tracks/related-song/${trackId}/`);
-      return { data: { tracks: response.data.songRelated?.tracks || [] } };
-    } catch (error) {
-      if (error.response?.status === 404) {
-        return { data: { tracks: [] } };
+        return { data: { relatedSongs: [] } };
       }
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }

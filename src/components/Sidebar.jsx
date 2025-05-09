@@ -5,9 +5,9 @@ import { HiOutlineHome, HiOutlineMenu, HiOutlinePhotograph, HiOutlineUser } from
 import { logo } from '../assets';
 
 const links = [
-  { name: 'Discover', to: '/', icon: HiOutlineHome },
-  { name: 'Your album', to: '/your-album', icon: HiOutlinePhotograph },
-  { name: 'Your profile', to: '/profile', icon: HiOutlineUser }
+  { name: 'Khám phá', to: '/', icon: HiOutlineHome },
+  { name: 'Album của bạn', to: '/your-album', icon: HiOutlinePhotograph },
+  { name: 'Hồ sơ của bạn', to: '/profile', icon: HiOutlineUser }
 ];
 
 const NavLinks = ({ handleClick }) => (

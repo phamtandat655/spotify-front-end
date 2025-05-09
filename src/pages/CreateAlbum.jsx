@@ -26,7 +26,7 @@ const CreateAlbum = () => {
     } else {
       const fetchSongs = async () => {
         setIsFetching(true);
-        const response = await spotifyApi.getSongsBySearch('d');
+        const response = await spotifyApi.getSongsBySearch('');
         if (response.error) {
           setError(response.error);
         } else {

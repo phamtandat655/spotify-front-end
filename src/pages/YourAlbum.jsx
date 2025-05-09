@@ -39,14 +39,14 @@ const YourAlbum = () => {
     <div className="flex flex-col bg-spotify-black p-6">
       <h1 className="font-bold text-3xl text-white text-left mb-10">Album Của Bạn</h1>
       {albums.length === 0 ? (
-        <div className="mt-10">
+        <div>
           <h2 className="font-bold text-2xl text-white text-left mb-3">Chưa có album nào</h2>
-          <p className="text-spotify-light-gray text-lg">
+          <p className="text-white text-spotify-light-gray text-lg">
             Vui lòng tạo một album bằng nút "Tạo Album" trên trang Khám Phá.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="mt-4 px-4 py-2 bg-spotify-green text-white rounded-lg hover:bg-green-600"
+            className="mt-4 px-4 py-2 bg-spotify-green text-white rounded-lg bg-green-600 hover:bg-green-700"
           >
             Đi đến trang Khám Phá
           </button>
@@ -58,12 +58,21 @@ const YourAlbum = () => {
               key={album.album_id}
               className="bg-[#121212] text-white bg-spotify-dark-gray rounded-lg p-6 shadow-lg mb-5"
             >
-              <h2 className="font-bold text-2xl text-white mb-4">
-                {album.name || 'Album không xác định'}
-              </h2>
-              <p className="text-spotify-light-gray text-lg mb-4">
-                Có: {album?.tracks?.length} bài hát
-              </p>
+              <div className='flex items-center mb-4'>
+                <img
+                    src={album.image}
+                    alt={album.name}
+                    className="w-16 h-16 object-cover rounded-lg mr-5"
+                  />
+                <div>
+                  <h2 className="font-bold text-2xl text-white">
+                    {album.name || 'Album không xác định'}
+                  </h2>
+                  <p className="text-spotify-light-gray text-lg">
+                    Có: {album?.tracks?.length} bài hát
+                  </p>
+                </div>
+              </div>
               <div className="flex flex-wrap sm:justify-start justify-center gap-8">
                 {album.tracks && album.tracks.length > 0 ? (
                   album.tracks.map((track, i) => (

@@ -81,10 +81,7 @@ const Profile = () => {
   };
 
   const handleClickAlbum = (albumId) => {
-    // Tạm thời hiển thị thông báo vì route /album/:albumId chưa tồn tại
-    alert(`Tính năng xem chi tiết album ${albumId} hiện chưa khả dụng.`);
-    // Nếu thêm route trong App.jsx, có thể sử dụng:
-    // navigate(`/album/${albumId}`);
+    navigate(`/your-album`);
   };
 
   if (isFetching) return <Loader title="Đang tải hồ sơ..." />;
@@ -190,7 +187,7 @@ const Profile = () => {
                 className="p-4 bg-spotify-dark-gray rounded-lg flex items-center space-x-4 cursor-pointer hover:bg-gray-600"
               >
                 <img
-                  src="https://picsum.photos/50"
+                  src={album.image}
                   alt={album.name}
                   className="w-16 h-16 object-cover rounded-lg"
                 />
