@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const DetailsHeader = ({ artistData, songData }) => {
   if (artistData) {
@@ -10,14 +10,16 @@ const DetailsHeader = ({ artistData, songData }) => {
         <div className="absolute inset-0 flex items-center">
           <img
             alt="artist cover"
-            src={artistData?.image || 'https://via.placeholder.com/150'}
+            src={artistData?.image_url || "https://via.placeholder.com/150"}
             className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
           />
 
           <div className="ml-5">
-            <p className="font-bold sm:text-3xl text-xl text-white">{artistData?.name || 'Không rõ nghệ sĩ'}</p>
+            <p className="font-bold sm:text-3xl text-xl text-white">
+              {artistData?.name || "Không rõ nghệ sĩ"}
+            </p>
             <p className="text-base text-gray-400 mt-2">
-              {artistData?.genres?.join(', ') || 'Không rõ thể loại'}
+              {artistData?.genres?.join(", ") || "Không rõ thể loại"}
             </p>
           </div>
         </div>
@@ -34,16 +36,24 @@ const DetailsHeader = ({ artistData, songData }) => {
       <div className="absolute inset-0 flex items-center">
         <img
           alt="song cover"
-          src={songData?.preview_url || 'https://via.placeholder.com/150'}
+          src={songData?.preview_url || "https://via.placeholder.com/150"}
           className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
         />
 
         <div className="ml-5">
-          <p className="font-bold sm:text-3xl text-xl text-white">{songData?.name || 'Không rõ bài hát'}</p>
-          <Link to={songData?.artist?.id ? `/artist/${songData.artist.id}` : '/'}>
-            <p className="text-base text-gray-400 mt-2">{songData?.artist?.name || 'Không rõ nghệ sĩ'}</p>
+          <p className="font-bold sm:text-3xl text-xl text-white">
+            {songData?.name || "Không rõ bài hát"}
+          </p>
+          <Link
+            to={songData?.artist?.id ? `/artist/${songData.artist.id}` : "/"}
+          >
+            <p className="text-base text-gray-400 mt-2">
+              {songData?.artist?.name || "Không rõ nghệ sĩ"}
+            </p>
           </Link>
-          <p className="text-base text-gray-400 mt-2">Nằm trong album : {songData?.album?.name || 'Không rõ'}</p>
+          <p className="text-base text-gray-400 mt-2">
+            Nằm trong album : {songData?.album?.name || "Không rõ"}
+          </p>
         </div>
       </div>
 

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { DetailsHeader, Error, Loader, SongCard } from '../components';
-import { setActiveSong, playPause } from '../redux/features/playerSlice';
-import { spotifyApi } from '../redux/services/spotifyApi';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { DetailsHeader, Error, Loader, SongCard } from "../components";
+import { setActiveSong, playPause } from "../redux/features/playerSlice";
+import { spotifyApi } from "../redux/services/spotifyApi";
 
 const ArtistDetails = () => {
   const dispatch = useDispatch();
@@ -17,8 +17,8 @@ const ArtistDetails = () => {
     const fetchArtistDetails = async () => {
       setIsFetchingArtistDetails(true);
       const response = await spotifyApi.getArtistDetails(artistId);
-      console.log('Artist ID:', artistId);
-      console.log('API Response:', response);
+      console.log("Artist ID:", artistId);
+      console.log("API Response:", response);
       if (response.error) {
         setError(response.error);
       } else {
@@ -34,14 +34,19 @@ const ArtistDetails = () => {
   };
 
   const handlePlayClick = (song, i) => {
-    console.log('Playing song:', song);
+    console.log("Playing song:", song);
     dispatch(setActiveSong({ song, data: artistData?.top_songs || [], i }));
     dispatch(playPause(true));
   };
 
-  if (isFetchingArtistDetails) return <Loader title="Đang tải chi tiết nghệ sĩ..." />;
-  if (error) return <Error message={error.data?.detail || 'Tải chi tiết nghệ sĩ thất bại'} />;
-  if (!artistData) return <div className="text-white p-6">Không tìm thấy nghệ sĩ.</div>;
+  if (isFetchingArtistDetails)
+    return <Loader title="Đang tải chi tiết nghệ sĩ..." />;
+  if (error)
+    return (
+      <Error message={error.data?.detail || "Tải chi tiết nghệ sĩ thất bại"} />
+    );
+  if (!artistData)
+    return <div className="text-white p-6">Không tìm thấy nghệ sĩ.</div>;
 
   return (
     <div className="flex flex-col bg-spotify-black p-6">
@@ -64,7 +69,9 @@ const ArtistDetails = () => {
               />
             ))
           ) : (
-            <p className="text-spotify-light-gray text-base">Không có bài hát nào.</p>
+            <p className="text-spotify-light-gray text-base">
+              Không có bài hát nào.
+            </p>
           )}
         </div>
       </div>
