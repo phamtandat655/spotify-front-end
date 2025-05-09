@@ -1,20 +1,36 @@
-import React, { useEffect, useRef } from 'react';
-
+import React, { useEffect, useRef } from "react";
+import axios from "axios";
 const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
   const videoRef = useRef(null);
+
+  // Hàm để cập nhật lượt xem bài hát
+  const updateTrackViews = async (trackId) => {
+    try {
+      const response = await axios.patch(
+        `http://127.0.0.1:8000/api/music/tracks/${trackId}/play/`
+      );
+      console.log(response.data); // In ra dữ liệu trả về từ server (nếu có)
+    } catch (error) {
+      console.error("Error updating track views:", error);
+    }
+  };
 
   // Handle play/pause
   useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.play().catch((error) => {
-          console.error('Error playing video:', error);
+          console.error("Error playing video:", error);
         });
+
+        if (activeSong?.id) {
+          updateTrackViews(activeSong.id);
+        }
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, activeSong, updateTrackViews]);
 
   // Handle volume changes
   useEffect(() => {
@@ -37,7 +53,7 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
       videoRef.current.load();
       if (isPlaying) {
         videoRef.current.play().catch((error) => {
-          console.error('Error playing video:', error);
+          console.error("Error playing video:", error);
         });
       }
     }

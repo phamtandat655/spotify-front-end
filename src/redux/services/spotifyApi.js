@@ -379,7 +379,6 @@ const spotifyApi = {
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }
   },
-
 };
 
 // Xuất spotifyApi để sử dụng trực tiếp trong các component
