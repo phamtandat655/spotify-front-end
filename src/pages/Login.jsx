@@ -30,7 +30,9 @@ const Login = () => {
           throw userProfile.error;
         }
         localStorage.setItem('userId', userProfile.data.id || 'unknown');
-        navigate('/profile');
+        localStorage.setItem('userRole', userProfile.data.role || '');
+        // navigate('/profile');
+        window.location.href = "/profile";
       } catch (err) {
         setErrors({ submit: err.data?.message || 'Sai tên người dùng hoặc mật khẩu' });
       } finally {

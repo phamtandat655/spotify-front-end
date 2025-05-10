@@ -107,7 +107,7 @@ const Discover = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+      <div className="flex flex-wrap sm:justify-start justify-center gap-3">
         {songsData.tracks.length > 0 ? (
           songsData.tracks.map((song, i) => (
             <SongCard

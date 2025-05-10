@@ -33,7 +33,7 @@ const DetailsHeader = ({ artistData, songData }) => {
       <div className="absolute inset-0 flex items-center">
         <img
           alt="song cover"
-          src={songData?.preview_url || "https://via.placeholder.com/150"}
+          src={songData?.image_url || "https://via.placeholder.com/150"}
           className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
         />
 
@@ -48,9 +48,6 @@ const DetailsHeader = ({ artistData, songData }) => {
               {songData?.artist?.name || "Không rõ nghệ sĩ"}
             </p>
           </Link>
-          <p className="text-base text-gray-400 mt-2">
-            Nằm trong album : {songData?.album?.name || "Không rõ"}
-          </p>
         </div>
       </div>
 

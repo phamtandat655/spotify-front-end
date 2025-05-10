@@ -21,6 +21,7 @@ const setTokens = ({ access_token, refresh_token }) => {
 // Hàm xóa token khi đăng xuất
 const clearTokens = () => {
   localStorage.removeItem('userId');
+  localStorage.removeItem('userRole');
   localStorage.removeItem('access_token');
   localStorage.removeItem('refresh_token');
 };
@@ -415,6 +416,57 @@ const spotifyApi = {
   updateUserName: async (name) => {
     try {
       const response = await axiosBase.patch('user/update/', { name });
+      return { data: response.data };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  downloadTrack: async (trackId) => {
+    try {
+      const response = await axiosBase.get(`music/tracks/download/${trackId}`, {
+        responseType: 'blob', // Expect binary data (MP4 file)
+      });
+      return { data: response.data, headers: response.headers };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  createTrack: async (formData) => {
+    try {
+      const response = await axiosBase.post('music/tracks/create/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return { data: response.data };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  getTotalAlbums: async () => {
+    try {
+      const response = await axiosBase.get('music/stats/albums/');
+      return { data: response.data };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  getTotalTracks: async () => {
+    try {
+      const response = await axiosBase.get('music/stats/tracks/');
+      return { data: response.data };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  getArtists: async () => {
+    try {
+      const response = await axiosBase.get('music/artists/');
       return { data: response.data };
     } catch (error) {
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };

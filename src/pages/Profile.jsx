@@ -82,7 +82,8 @@ const Profile = () => {
         throw resp.error;
       }
       localStorage.removeItem('userId');
-      navigate('/login');
+      // navigate('/login');
+      window.location.href = "/login";
     } catch (err) {
       alert(err.data?.message || 'Đăng xuất thất bại');
     } finally {

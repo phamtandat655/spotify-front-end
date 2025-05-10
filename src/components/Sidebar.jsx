@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { HiOutlineHome, HiOutlineMenu, HiOutlinePhotograph, HiOutlineUser } from 'react-icons/hi';
+import { HiOutlineHome, HiOutlineMenu, HiOutlinePhotograph, HiOutlineUser, HiOutlineMusicNote, HiOutlinePlus, HiLogin } from 'react-icons/hi';
+import { RiCloseLine } from 'react-icons/ri';
 
 import { logo } from '../assets';
 
-const links = [
-  { name: 'Khám phá', to: '/', icon: HiOutlineHome },
-  { name: 'Album của bạn', to: '/your-album', icon: HiOutlinePhotograph },
-  { name: 'Hồ sơ của bạn', to: '/profile', icon: HiOutlineUser }
-];
+const getLinks = () => {
+  const userRole = localStorage.getItem('userRole');
+  const baseLinks = [
+    { name: 'Khám phá', to: '/', icon: HiOutlineHome },
+  ];
+
+  if (userRole === 'admin') {
+    return [
+      ...baseLinks,
+      { name: 'Album của bạn', to: '/your-album', icon: HiOutlinePhotograph },
+      { name: 'Hồ sơ của bạn', to: '/profile', icon: HiOutlineUser },
+      { name: 'Admin Dashboard', to: '/admin', icon: HiOutlineMusicNote },
+      { name: 'Tạo Bài Hát', to: '/admin/create-track', icon: HiOutlinePlus },
+    ];
+  } else if (userRole === 'user') {
+    return [
+      ...baseLinks,
+      { name: 'Album của bạn', to: '/your-album', icon: HiOutlinePhotograph },
+      { name: 'Hồ sơ của bạn', to: '/profile', icon: HiOutlineUser },
+    ];
+  }
+
+  return [
+    ...baseLinks,
+    { name: 'Đăng nhập', to: '/login', icon: HiLogin },
+  ];
+};
 
 const NavLinks = ({ handleClick }) => (
   <div className="mt-10">
-    {links.map((item) => (
+    {getLinks().map((item) => (
       <NavLink
         key={item.name}
         to={item.to}

@@ -7,12 +7,9 @@ const CreateAlbum = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
   const [songsList, setSongsList] = useState([]);
-  const [artists, setArtists] = useState([]);
   const [isFetchingSongs, setIsFetchingSongs] = useState(true);
-  const [isFetchingArtists, setIsFetchingArtists] = useState(true);
   const [error, setError] = useState(null);
   const [albumName, setAlbumName] = useState('');
-  const [artistId, setArtistId] = useState('');
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedSongs, setSelectedSongs] = useState([]);
@@ -39,11 +36,6 @@ const CreateAlbum = () => {
           setSongsList(songsResponse.data.tracks || []);
         }
         setIsFetchingSongs(false);
-
-        // Set hardcoded artists
-        setIsFetchingArtists(true);
-        setArtists([{ id: 1, name: 'Joji' }]);
-        setIsFetchingArtists(false);
       };
       fetchData();
     }
@@ -98,9 +90,6 @@ const CreateAlbum = () => {
     if (!albumName.trim()) {
       newErrors.albumName = 'Tên album là bắt buộc';
     }
-    if (!artistId) {
-      newErrors.artistId = 'Vui lòng chọn nghệ sĩ';
-    }
     if (selectedSongs.length === 0) {
       newErrors.selectedSongs = 'Phải chọn ít nhất một bài hát';
     }
@@ -112,7 +101,7 @@ const CreateAlbum = () => {
         setIsCreatingAlbum(true);
         const albumResponse = await spotifyApi.createAlbum({
           userId,
-          album: { name: albumName, artist_id: artistId, image },
+          album: { name: albumName, image },
         });
         if (albumResponse.error) {
           throw albumResponse.error;
@@ -141,7 +130,7 @@ const CreateAlbum = () => {
     }
   };
 
-  if (isFetchingSongs || isFetchingArtists) return <Loader title="Đang tải dữ liệu..." />;
+  if (isFetchingSongs) return <Loader title="Đang tải dữ liệu..." />;
   if (error) return <Error message={error.data?.detail || 'Tải dữ liệu thất bại'} />;
 
   return (
@@ -162,27 +151,6 @@ const CreateAlbum = () => {
           />
           {errors.albumName && (
             <p className="text-red-500 text-sm mt-1">{errors.albumName}</p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="artistId" className="block text-sm font-medium mb-1 text-spotify-light-gray">
-            Nghệ Sĩ
-          </label>
-          <select
-            id="artistId"
-            value={artistId}
-            onChange={(e) => setArtistId(e.target.value)}
-            className="text-[#121212] w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
-          >
-            <option value="">Chọn nghệ sĩ</option>
-            {artists.map((artist) => (
-              <option key={artist.id} value={artist.id}>
-                {artist.name}
-              </option>
-            ))}
-          </select>
-          {errors.artistId && (
-            <p className="text-red-500 text-sm mt-1">{errors.artistId}</p>
           )}
         </div>
         <div>

@@ -6,7 +6,7 @@ const Track = ({ isPlaying, isActive, activeSong }) => {
       {isActive && activeSong ? (
         <>
           <img
-            src={activeSong?.preview_url || 'https://via.placeholder.com/64'}
+            src={activeSong?.image_url || 'https://via.placeholder.com/64'}
             alt={activeSong?.name || 'Bài hát'}
             className="w-16 h-16 rounded-lg object-cover"
           />

@@ -49,9 +49,7 @@ const MusicPlayer = () => {
   const toggleMinimize = () => {
     if (isMinimized) {
       dispatch(playPause(true));
-    } else {
-      dispatch(playPause(false));
-    }
+    } 
     setIsMinimized(!isMinimized);
   };
 
@@ -81,7 +79,7 @@ const MusicPlayer = () => {
         <div className="flex items-center justify-between px-4 py-3 mb-5">
           <div className="flex items-center space-x-4">
             <img
-              src={activeSong?.preview_url || "https://via.placeholder.com/50"}
+              src={activeSong?.image_url || "https://via.placeholder.com/50"}
               alt={activeSong?.name || "Bài hát"}
               className="w-12 h-12 object-cover rounded-lg"
             />

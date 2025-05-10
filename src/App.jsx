@@ -13,6 +13,8 @@ import CreateAlbum from "./pages/CreateAlbum";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AdminDashboard from "./pages/AdminDashboard";
+import CreateTrack from "./pages/CreateTrack";
 
 const App = () => {
   const { activeSong } = useSelector((state) => state.player);
@@ -36,6 +38,9 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/create-track" element={<CreateTrack />} />
             </Routes>
           </div>
         </div>

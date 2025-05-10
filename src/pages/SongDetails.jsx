@@ -54,13 +54,6 @@ const SongDetails = () => {
     <div className="flex flex-col bg-spotify-black p-6">
       <DetailsHeader songData={songData} />
 
-      {/* <div className="mb-10">
-        <h2 className="text-white text-3xl font-bold">Lời Bài Hát:</h2>
-        <div className="mt-5">
-          <p className="text-spotify-light-gray text-base my-1">Xin lỗi, hiện không có lời bài hát!</p>
-        </div>
-      </div> */}
-
       <div className="mb-10">
         <h2 className="text-white text-3xl font-bold">Bài Hát Liên Quan:</h2>
         <div className="mt-5 flex flex-wrap sm:justify-start justify-center gap-8">
