@@ -20,6 +20,7 @@ const setTokens = ({ access_token, refresh_token }) => {
 
 // Hàm xóa token khi đăng xuất
 const clearTokens = () => {
+  localStorage.removeItem('userId');
   localStorage.removeItem('access_token');
   localStorage.removeItem('refresh_token');
 };
@@ -245,12 +246,18 @@ const spotifyApi = {
 
   createAlbum: async ({ userId, album }) => {
     try {
-      const response = await axiosBase.post(`user/${userId}/albums/create/`, { name: album.name });
+      const formData = new FormData();
+      formData.append('name', album.name);
+      if (album.artist_id) formData.append('artist_id', album.artist_id);
+      if (album.image) formData.append('image', album.image);
+
+      const response = await axiosBase.post(`user/${userId}/albums/create/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return { data: response.data };
     } catch (error) {
-      if (error.response?.status === 404) {
-        return { data: { detail: 'User not found' } };
-      }
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }
   },
@@ -376,6 +383,40 @@ const spotifyApi = {
       if (error.response?.status === 404) {
         return { data: { relatedSongs: [] } };
       }
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+  editAlbum: async ({ albumId, album }) => {
+    try {
+      const formData = new FormData();
+      if (album.name) formData.append('name', album.name);
+      if (album.image) formData.append('image', album.image);
+
+      const response = await axiosBase.patch(`user/albums/${albumId}/edit/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return { data: response.data };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  deleteAlbum: async (albumId) => {
+    try {
+      const response = await axiosBase.delete(`user/albums/${albumId}/delete/`);
+      return { data: response.data || { success: true } };
+    } catch (error) {
+      return { error: { status: error.response?.status, data: error.response?.data || error.message } };
+    }
+  },
+
+  updateUserName: async (name) => {
+    try {
+      const response = await axiosBase.patch('user/update/', { name });
+      return { data: response.data };
+    } catch (error) {
       return { error: { status: error.response?.status, data: error.response?.data || error.message } };
     }
   },

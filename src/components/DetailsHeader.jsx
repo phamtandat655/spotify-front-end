@@ -18,9 +18,6 @@ const DetailsHeader = ({ artistData, songData }) => {
             <p className="font-bold sm:text-3xl text-xl text-white">
               {artistData?.name || "Không rõ nghệ sĩ"}
             </p>
-            <p className="text-base text-gray-400 mt-2">
-              {artistData?.genres?.join(", ") || "Không rõ thể loại"}
-            </p>
           </div>
         </div>
 

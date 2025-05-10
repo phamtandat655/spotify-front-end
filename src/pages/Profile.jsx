@@ -58,9 +58,19 @@ const Profile = () => {
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // Tạm thời hiển thị thông báo vì endpoint PUT /user/me/ chưa tồn tại
-      alert('Tính năng cập nhật hồ sơ hiện chưa khả dụng. Vui lòng liên hệ quản trị viên.');
-      setEditMode(false);
+      try {
+        const response = await spotifyApi.updateUserName(name);
+        if (response.error) {
+          throw response.error;
+        }
+        setUser((prev) => ({ ...prev, name }));
+        setEditMode(false);
+        setFormErrors({});
+      } catch (err) {
+        setFormErrors({
+          submit: err.data?.detail || err.data?.message || 'Cập nhật tên thất bại',
+        });
+      }
     }
   };
 
@@ -119,25 +129,6 @@ const Profile = () => {
                 <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
               )}
             </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1 text-spotify-light-gray">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white text-[#121212] w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-spotify-green text-white"
-                placeholder="Nhập email của bạn"
-              />
-              {formErrors.email && (
-                <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
-              )}
-            </div>
-            {formErrors.submit && (
-              <p className="text-red-500 text-sm">{formErrors.submit}</p>
-            )}
             <div className="flex space-x-4">
               <button
                 type="submit"

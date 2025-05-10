@@ -11,25 +11,114 @@ const YourAlbum = () => {
   const [albums, setAlbums] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState(null);
+  const [editModal, setEditModal] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editImage, setEditImage] = useState(null);
+  const [editImagePreview, setEditImagePreview] = useState(null);
+  const [editErrors, setEditErrors] = useState({});
 
   useEffect(() => {
     if (!userId) {
       navigate('/login');
     } else {
-      const fetchAlbums = async () => {
-        setIsFetching(true);
-        const response = await spotifyApi.getUserAlbums(userId);
-        if (response.error) {
-          setError(response.error);
-          setAlbums([]);
-        } else {
-          setAlbums(response.data || []);
-        }
-        setIsFetching(false);
-      };
       fetchAlbums();
     }
   }, [userId, navigate]);
+
+  useEffect(() => {
+    // Clean up image preview URL on component unmount
+    return () => {
+      if (editImagePreview) {
+        URL.revokeObjectURL(editImagePreview);
+      }
+    };
+  }, [editImagePreview]);
+
+  const fetchAlbums = async () => {
+    setIsFetching(true);
+    const response = await spotifyApi.getUserAlbums(userId);
+    if (response.error) {
+      setError(response.error);
+      setAlbums([]);
+    } else {
+      setAlbums(response.data || []);
+    }
+    setIsFetching(false);
+  };
+
+  const handleEditClick = (album) => {
+    setEditModal(album.album_id);
+    setEditName(album.name);
+    setEditImage(null);
+    setEditImagePreview(album.image);
+    setEditErrors({});
+  };
+
+  const handleEditImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
+      setEditErrors((prev) => ({
+        ...prev,
+        image: 'Chỉ hỗ trợ file JPEG hoặc PNG',
+      }));
+      setEditImage(null);
+      setEditImagePreview(null);
+    } else {
+      setEditErrors((prev) => ({ ...prev, image: null }));
+      setEditImage(file);
+      if (file) {
+        if (editImagePreview) {
+          URL.revokeObjectURL(editImagePreview);
+        }
+        setEditImagePreview(URL.createObjectURL(file));
+      } else {
+        setEditImagePreview(null);
+      }
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!editName.trim()) {
+      newErrors.name = 'Tên album là bắt buộc';
+    }
+
+    setEditErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await spotifyApi.editAlbum({
+          albumId: editModal,
+          album: { name: editName, image: editImage },
+        });
+        if (response.error) {
+          throw response.error;
+        }
+        setEditModal(null);
+        fetchAlbums(); // Refresh album list
+      } catch (err) {
+        setEditErrors({
+          submit: err.data?.detail || err.data?.message || 'Chỉnh sửa album thất bại',
+        });
+      }
+    }
+  };
+
+  const handleDeleteClick = async (albumId, albumName) => {
+    if (window.confirm(`Bạn có chắc muốn xóa album "${albumName}"?`)) {
+      try {
+        const response = await spotifyApi.deleteAlbum(albumId);
+        if (response.error) {
+          throw response.error;
+        }
+        fetchAlbums(); // Refresh album list
+      } catch (err) {
+        setError({ data: { detail: err.data?.detail || 'Xóa album thất bại' } });
+      }
+    }
+  };
 
   if (isFetching) return <Loader title="Đang tải album của bạn..." />;
 
@@ -58,19 +147,35 @@ const YourAlbum = () => {
               key={album.album_id}
               className="bg-[#121212] text-white bg-spotify-dark-gray rounded-lg p-6 shadow-lg mb-5"
             >
-              <div className='flex items-center mb-4'>
-                <img
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <img
                     src={album.image}
                     alt={album.name}
                     className="w-16 h-16 object-cover rounded-lg mr-5"
                   />
-                <div>
-                  <h2 className="font-bold text-2xl text-white">
-                    {album.name || 'Album không xác định'}
-                  </h2>
-                  <p className="text-spotify-light-gray text-lg">
-                    Có: {album?.tracks?.length} bài hát
-                  </p>
+                  <div>
+                    <h2 className="font-bold text-2xl text-white">
+                      {album.name || 'Album không xác định'}
+                    </h2>
+                    <p className="text-spotify-light-gray text-lg">
+                      Có: {album?.tracks?.length} bài hát
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleEditClick(album)}
+                    className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Sửa
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(album.album_id, album.name)}
+                    className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Xóa
+                  </button>
                 </div>
               </div>
               <div className="flex flex-wrap sm:justify-start justify-center gap-8">
@@ -93,6 +198,75 @@ const YourAlbum = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#121212] p-6 rounded-lg max-w-md w-full">
+            <h2 className="text-2xl font-bold text-white mb-4">Chỉnh Sửa Album</h2>
+            <form onSubmit={handleEditSubmit} className="space-y-4" encType="multipart/form-data">
+              <div>
+                <label htmlFor="editName" className="text-white block text-sm font-medium mb-1 text-spotify-light-gray">
+                  Tên Album
+                </label>
+                <input
+                  type="text"
+                  id="editName"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-spotify-green"
+                  placeholder="Nhập tên album"
+                />
+                {editErrors.name && (
+                  <p className="text-red-500 text-sm mt-1">{editErrors.name}</p>
+                )}
+              </div>
+              <div>
+                <label htmlFor="editImage" className="text-white block text-sm font-medium mb-1 text-spotify-light-gray">
+                  Ảnh Album (JPEG hoặc PNG)
+                </label>
+                <input
+                  type="file"
+                  id="editImage"
+                  accept="image/jpeg,image/png"
+                  onChange={handleEditImageChange}
+                  className="w-full p-2 bg-spotify-dark-gray border border-gray-600 rounded-lg text-black"
+                />
+                {editImagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={editImagePreview}
+                      alt="Album preview"
+                      className="w-24 h-24 object-cover rounded-lg border border-gray-600"
+                    />
+                  </div>
+                )}
+                {editErrors.image && (
+                  <p className="text-red-500 text-sm mt-1">{editErrors.image}</p>
+                )}
+              </div>
+              {editErrors.submit && (
+                <p className="text-red-500 text-sm">{editErrors.submit}</p>
+              )}
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setEditModal(null)}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-spotify-green text-white rounded-lg bg-green-600 hover:bg-green-700"
+                >
+                  Lưu
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

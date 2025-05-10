@@ -129,7 +129,7 @@ const MusicPlayer = () => {
               </button>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full pb-2">
             <Player
               activeSong={activeSong}
               volume={volume}
@@ -139,7 +139,7 @@ const MusicPlayer = () => {
               onEnded={handleNextSong}
             />
           </div>
-          <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col items-center justify-center pb-3">
             <Controls
               isPlaying={isPlaying}
               currentSongs={currentSongs}
