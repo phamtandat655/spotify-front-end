@@ -82,6 +82,9 @@ const Profile = () => {
         throw resp.error;
       }
       localStorage.removeItem('userId');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       // navigate('/login');
       window.location.href = "/login";
     } catch (err) {
