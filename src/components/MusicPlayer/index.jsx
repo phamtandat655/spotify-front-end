@@ -47,10 +47,10 @@ const MusicPlayer = () => {
   };
 
   const toggleMinimize = () => {
-    if (!isMinimized) {
-      dispatch(playPause(false));
-    } else {
+    if (isMinimized) {
       dispatch(playPause(true));
+    } else {
+      dispatch(playPause(false));
     }
     setIsMinimized(!isMinimized);
   };
@@ -65,6 +65,17 @@ const MusicPlayer = () => {
           : "relative sm:px-12 py-3 px-8 flex flex-col items-center"
       }`}
     >
+      {/* Always render Player, but hide video when minimized */}
+      <Player
+        activeSong={activeSong}
+        volume={volume}
+        isPlaying={isPlaying}
+        repeat={false}
+        currentIndex={currentIndex}
+        onEnded={handleNextSong}
+        isMinimized={isMinimized}
+      />
+
       {isMinimized ? (
         // Minimized View
         <div className="flex items-center justify-between px-4 py-3 mb-5">
@@ -105,12 +116,21 @@ const MusicPlayer = () => {
       ) : (
         // Full View
         <>
-          <div className="w-full flex items-center justify-between mb-4">
+          <div className="w-full flex items-center justify-around mb-4 mt-2">
             <Track
               isPlaying={isPlaying}
               isActive={isActive}
               activeSong={activeSong}
             />
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <Controls
+                isPlaying={isPlaying}
+                currentSongs={currentSongs}
+                handlePlayPause={handlePlayPause}
+                handlePrevSong={handlePrevSong}
+                handleNextSong={handleNextSong}
+              />
+            </div>
             <div className="flex items-center space-x-4">
               <VolumeBar
                 value={volume}
@@ -128,25 +148,6 @@ const MusicPlayer = () => {
                 <ChevronDownIcon className="h-6 w-6" />
               </button>
             </div>
-          </div>
-          <div className="w-full pb-2">
-            <Player
-              activeSong={activeSong}
-              volume={volume}
-              isPlaying={isPlaying}
-              repeat={false}
-              currentIndex={currentIndex}
-              onEnded={handleNextSong}
-            />
-          </div>
-          <div className="flex-1 flex flex-col items-center justify-center pb-3">
-            <Controls
-              isPlaying={isPlaying}
-              currentSongs={currentSongs}
-              handlePlayPause={handlePlayPause}
-              handlePrevSong={handlePrevSong}
-              handleNextSong={handleNextSong}
-            />
           </div>
         </>
       )}

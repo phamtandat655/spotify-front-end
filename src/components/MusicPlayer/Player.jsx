@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
-const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
+
+const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded, isMinimized }) => {
   const videoRef = useRef(null);
 
   // Hàm để cập nhật lượt xem bài hát
@@ -60,11 +61,11 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded }) => {
   }, [activeSong, isPlaying]);
 
   return (
-    <div className="w-full h-64 bg-gray-800 rounded-lg overflow-hidden">
+    <div className={`w-full ${isMinimized ? '' : 'h-64'} bg-gray-800 rounded-lg overflow-hidden`}>
       {activeSong?.video_url ? (
         <video
           ref={videoRef}
-          className="w-full h-full object-contain"
+          className={`w-full h-full object-contain ${isMinimized ? 'hidden' : ''}`}
           onEnded={onEnded}
           controls
           muted={volume === 0}
