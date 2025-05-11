@@ -13,7 +13,6 @@ Một ứng dụng phát nhạc tương tự Spotify được xây dựng bằng
 - [Hạn Chế](#hạn-chế)
 - [Cải Tiến Trong Tương Lai](#cải-tiền-trong-tương-lai)
 - [Đóng Góp](#đóng-góp)
-- [Giấy Phép](#giấy-phép)
 
 ## Tính Năng
 - **Phát Nhạc**: Phát các video MP4 với trình phát tùy chỉnh, hỗ trợ phát/tạm dừng, bài tiếp theo/trước đó, điều chỉnh âm lượng và giao diện thu nhỏ/mở rộng.
